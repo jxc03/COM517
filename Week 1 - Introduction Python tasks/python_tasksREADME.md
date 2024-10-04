@@ -277,15 +277,154 @@ print(common_elements)
 ```
 
 **T21**<br>
-Write a function `is_prime(n)` that returns `True` if a number is prime, otherwise
-returns `False`.
+Write a function `is_prime(n)` that returns `True` if a number is prime, otherwise returns `False`.
 
 ```python
-set1 = {1, 2, 3, 4, 5}
-set2 = {4, 5, 6, 7, 8}
-common_elements = set1.intersection(set2)
-print(common_elements)
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int (n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+        return True
+    
+print (is_prime (13) )
+print (is_prime (6) )
 ```
 ```
-{4, 5}
+True
+False
 ```
+
+**T22**<br>
+Write a Python program to flatten a list of lists. E.g., `[[1, 2], [3, 4]]` becomes `[1, 2, 3, 4]`.
+
+```python
+list_of_lists = [ [1, 2], [3, 4] ]
+flattened_list = [ item for sublist in list_of_lists for item in sublist]
+print(flattened_list)
+```
+```
+[1, 2, 3, 4]
+```
+
+**T23**<br>
+Write a Python program to remove duplicates from a list.
+
+```python
+numbers = [1, 2, 2, 3, 4, 4, 5, 6, 6]
+unique_numbers = list(set (numbers) )
+print(unique_numbers)
+```
+```
+[1, 2, 3, 4, 5, 6]
+```
+
+**T24**<br>
+Write a Python program to check if two strings are anagrams of each other.
+
+```python
+def are_anagrams(s1, s2):
+    return sorted(s1) == sorted(s2)
+
+print(are_anagrams ('listen', 'silent') )
+print(are_anagrams ('hello', 'world') )
+print(are_anagrams ('man', 'woman') )
+```
+```
+True
+False
+False
+```
+
+**T25**<br>
+Write a Python program to find the smallest number in a list.
+
+```python
+def find_smallest(numbers):
+    return min(numbers)
+
+numbers = [100, 9, 32, 15, 24, 2]
+
+print(find_smallest (numbers) )
+```
+```
+2
+```
+
+**T26**<br>
+Write a Python program to remove all whitespace from a string.
+
+```python
+string = ' Hello        World         '
+cleaned_string = string.replace(' ', "")
+print(cleaned_string)
+```
+```
+HelloWorld
+```
+
+**T26**<br>
+Write a Python program to remove all whitespace from a string.
+
+```python
+string = ' Hello        World         '
+cleaned_string = string.replace(' ', "")
+print(cleaned_string)
+```
+```
+HelloWorld
+```
+
+**T27**<br>
+Write a Python program to find the second largest number in a list.
+
+```python
+numbers = [10, 20, 4, 45, 99]
+unique_numbers = list(set (numbers) )
+unique_numbers.sort()
+print(unique_numbers[-2]) 
+```
+```
+45
+```
+
+**T28**<br>
+Write a Python program to find the length of the longest word in a sentence.
+
+```python
+sentence = 'I wonder what is the longest word'
+longest_word = max(sentence.split(), key = len)
+print(len (longest_word) )
+```
+```
+7
+```
+
+**T29**<br>
+Write a Python program to generate all the divisors of a given number.
+
+```python
+def divisors(n):
+    return [i for i in range(1, n + 1) if n % i == 0]
+
+print(divisors (32) )
+```
+```
+[1, 2, 4, 8, 16, 32]
+```
+
+**T30**<br>
+Write a Python program to calculate the area of a circle given its radius.
+
+```python
+import math
+radius = 5
+area = math.pi * (radius ** 2)
+print(area) 
+```
+```
+78.53981633974483
+```
+
+#Add explanation / breakdown of code to every T
