@@ -135,10 +135,128 @@ Create a multiply route.<br>
 Add a route `/multiply/<a>/<b>` that takes two numbers as input and returns their product.
 
 ```python
+@app.route('/multiply/<int:a>/<int:b>') #Root route
+def multiply(a, b): #Function, takes a and b as input
+    return f"The multiplication of {a} and {b} is {a * b}" #Output
+```
+
+**T10**<br>
+Create a divide route<br>
+Add a route `/divide/<a>/<b>` that takes two numbers as input and returns their quotient. Ensure the second number is not zero.
+
+```python
+@app.route('/square/<int:numbers>') #Root route
+def square(number): #Function, takes number as input
+    return f"The square of {number} is {number ** 2}" #Output
+```
+
+**T11**<br>
+Create a length of string route<br>
+Add a route `/length/<string:input_str>` that takes a string as input and returns its length.
+
+```python
+@app.route('/length/<string:input_str>') #Root route
+def string_length(input_str): #Function, takes input_str as input
+    return f"The length of the input string is {len(input_str)}." #Output
+```
+
+**T12**<br>
+Add user route (/add_user - POST).<br>
+This route will allow you to add a new user to the database.
+
+```python
+@app.route('/add_user', methods=['POST'])
+def add_user():
+data = request.get_json()
+name = data.get('name')
+email = data.get('email')
+if name and email:
+user_id = users_collection.insert_one({"name": name, "email": email}).inserted_id
+return jsonify({"message": "User added successfully", "id": str(user_id)})
+return jsonify({"error": "Invalid input"}), 400
+```
+
+**T13**<br>
+Get all users route (/users - GET).<br>
+This route will retrieve all users from the database.
+
+```python
+@app.route('/users', methods=['GET'])
+def get_users():
+    users = users_collection.find()
+    result = [{"id": str(user["_id"]), "name": user["name"], "email": user["email"]} for user in users]
+    return jsonify({"users": result})
+```
+
+**T14**<br>
+Get user by ID (/user/<user_id> - GET).<br>
+This route will return a specific user's details by their MongoDB _id.
+
+```python
+from bson.objectid import ObjectId
+
+@app.route('/user/<user_id>', methods=['GET'])
+def get_user(user_id):
+    user = users_collection.find_one({"_id": ObjectId(user_id)})
+
+    if user:
+        return jsonify({"id": str(user["_id"]), "name": user["name"], "email": user["email"]})
+    return jsonify({"error": "User not found"}), 404
+```
+
+**T15**<br>
+Update user route (/update_user/<user_id> - PUT).<br>
+This route will update an existing user's name and email.
+
+```python
+@app.route('/update_user/<user_id>/<name>/<email>', methods=['PUT'])
+def update_user(user_id, name, email):
+    users_collection.update_one(
+        {"_id": ObjectId(user_id)}, 
+        {"$set": {"name": name, "email": email}}
+        )
+    return jsonify({"message": "User updated successfully!"})
+```
+
+**T16**<br>
+Delete user route (/delete_user/<user_id> - DELETE).<br>
+This route will delete a user by their ID.
+
+```python
+@app.route('/delete_user/<user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    result = users_collection.delete_one({"_id": ObjectId(user_id)})
+    
+    if result.deleted_count > 0:
+        return jsonify({"message": f"User {user_id} deleted successfully!"})
+    return jsonify({"error": "User not found"}), 404
+```
+
+**T17**<br>
+Filter users by name (/users/name/<name> - GET).<br>
+This route will filter users by their name.
+
+```python
+@app.route('/users/name/<name>', methods=['GET'])
+def get_users_by_name(name):
+    users = users_collection.find({"name": name})
+    result = [{"id": str(user["_id"]), "name": user["name"], "email": user["email"]} for user in users]
+    return jsonify({"users": result})
+```
+
+**T15**<br>
+
+```python
 
 ```
 
-**T6**<br>
+**T15**<br>
+
+```python
+
+```
+
+**T15**<br>
 
 ```python
 
