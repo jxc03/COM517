@@ -61,5 +61,21 @@ Explanation
 - `import random`: Brings in the random module to generate random values for names, ages, and cities.
 
 3. Sample data:
+- `first_names`: A list of typical first names in Northern Ireland.
+- `last_names`: A list of typical last names in Northern Ireland.
+- `cities`: A list of cities in Northern Ireland where users can be from.
+
 4. Generate dataset:
+- Initializes an empty list called `users`.
+- Loops 15 times to create 15 user entries.
+- `random.choice(first_names)`: Selects a random first name from the list.
+- `random.choice(last_names)`: Selects a random last name from the list.
+- `random.randint(18, 55)`: Generates a random age between 18 and 55.
+- `random.choice(cities)`: Selects a random city from the list.
+- Appends each user dictionary to the `users` list.
+
 5. Save dataset to JSON file:
+- `try` block: Attempts to write the data to a file and handle any potential errors.
+- `with open('users.json', 'w') as file`: Opens (or creates) a file named users.json for writing.
+- `json.dump(users, file, indent=4)`: Converts the users list to a JSON-formatted string and writes it to the file with an indentation of 4 spaces for readability.
+- `except Exception as e`: Catches any exceptions that might occur during file operations and prints an error message.
