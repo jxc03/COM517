@@ -238,15 +238,19 @@ Get user by ID (/user/<user_id> - GET).<br>
 This route will return a specific user's details by their MongoDB _id.
 
 ```python
-from bson.objectid import ObjectId
-
-@app.route('/user/<user_id>', methods=['GET'])
-def get_user(user_id):
-    user = users_collection.find_one({"_id": ObjectId(user_id)})
-
-    if user:
-        return jsonify({"id": str(user["_id"]), "name": user["name"], "email": user["email"]})
-    return jsonify({"error": "User not found"}), 404
+'''
+Route to retrieve all users from the database.
+Returns a JSON object containing a list of users with their IDs, names, and emails.
+'''
+# Route to get a user by user_id using the GET method
+@app.route('/user/<user_id>', methods=['GET'])  # Defines a route for GET requests to fetch a user by their user_id
+def get_user(user_id):  # Defines the function to get a user, takes user_id as its parameter
+    # Query the database to find the user by user_id
+    user = users_collection.find_one({"_id": ObjectId(user_id)})  # Finds the user in the collection using their ObjectId
+    if user:  # If the user is found
+        return jsonify({"id": str(user["_id"]), "name": user["name"], "email": user["email"]})  # Return user details as JSON
+    # If the user is not found
+    return jsonify({"error": "User not found"}), 404  # Return an error message with a 404 status code
 ```
 
 **T15**<br>
@@ -254,13 +258,24 @@ Update user route (/update_user/<user_id> - PUT).<br>
 This route will update an existing user's name and email.
 
 ```python
-@app.route('/update_user/<user_id>/<name>/<email>', methods=['PUT'])
-def update_user(user_id, name, email):
-    users_collection.update_one(
-        {"_id": ObjectId(user_id)}, 
-        {"$set": {"name": name, "email": email}}
+'''
+Route to update a user's name and email in the database
+Accepts user_id, name, and email as parameters
+Returns a JSON object with a success message upon completion
+'''
+@app.route('/update_user/<user_id>/<name>/<email>', methods=['PUT']) # Route to update a user's name and email using the PUT method
+def update_user(user_id, name, email): # Function to update a user, takes user_id, name, and email as parameters
+    
+    #Converts the user_id to an ObjectId
+    user_id_obj = ObjectId(user_id)
+    
+    #Updates the user's name and email in the database
+    users_collection.update_one( #Update the user's name and email in the database
+        {"_id": user_id_obj}, #Finds the user by their ObjectId
+        {"$set": {"name": name, "email": email}} #Sets the new name and email values
         )
-    return jsonify({"message": "User updated successfully!"})
+    
+    return jsonify({"message": "User updated successfully!"}) #Returns a success message as JSON
 ```
 
 **T16**<br>
@@ -268,13 +283,26 @@ Delete user route (/delete_user/<user_id> - DELETE).<br>
 This route will delete a user by their ID.
 
 ```python
-@app.route('/delete_user/<user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    result = users_collection.delete_one({"_id": ObjectId(user_id)})
+'''
+Route to delete a user from the database by user_id.
+Takes user_id as a URL parameter.
+Returns a JSON object with a success message if the user is deleted,
+or an error message if the user is not found.
+'''
+# Route for deleting a user by user_id using the DELETE method
+@app.route('/delete_user/<user_id>', methods=['DELETE'])  # Defines the route and allowed HTTP method
+def delete_user(user_id):  # Function to delete a user, takes user_id as its parameter
     
-    if result.deleted_count > 0:
-        return jsonify({"message": f"User {user_id} deleted successfully!"})
-    return jsonify({"error": "User not found"}), 404
+    user_id_obj = ObjectId(user_id)  # Convert user_id to ObjectId
+    
+    # Attempt to delete the user from the database
+    result = users_collection.delete_one({"_id": user_id_obj})  # Deletes a single document from the users collection
+    
+    if result.deleted_count > 0:  # If the deletion was successful
+        return jsonify({"message": f"User {user_id} deleted successfully!"})  # Return success message as JSON
+    
+    # If no user was deleted (user not found)
+    return jsonify({"error": "User not found"}), 404  # Return an error message with a 404 status code
 ```
 
 **T17**<br>
@@ -282,27 +310,23 @@ Filter users by name (/users/name/<name> - GET).<br>
 This route will filter users by their name.
 
 ```python
-@app.route('/users/name/<name>', methods=['GET'])
-def get_users_by_name(name):
-    users = users_collection.find({"name": name})
-    result = [{"id": str(user["_id"]), "name": user["name"], "email": user["email"]} for user in users]
-    return jsonify({"users": result})
+'''
+Route to retrieve users by their name from the database.
+Takes a name as a URL parameter.
+Returns a JSON object containing a list of users with their IDs, names, and emails.
+'''
+# Route for retrieving users by name using the GET method
+@app.route('/users/name/<name>', methods=['GET'])  # Defines the route and allowed HTTP method
+def get_users_by_name(name):  # Function to get users by name, takes name as its parameter
+    
+    # Query the database to find users with the specified name
+    users = users_collection.find({"name": name})  # Finds all users with the given name
+    
+    # Create a list of users with their details
+    result = [{"id": str(user["_id"]), "name": user["name"], "email": user["email"]} for user in users]  # Convert ObjectId to string and create a list of user details
+    
+    # Return the list of users as JSON
+    return jsonify({"users": result})  # Sends the user list as JSON
 ```
 
-**T15**<br>
 
-```python
-
-```
-
-**T15**<br>
-
-```python
-
-```
-
-**T15**<br>
-
-```python
-
-```
