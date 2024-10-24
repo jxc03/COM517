@@ -79,7 +79,7 @@ def get_users_by_city(city):  # Function to get users by city
         return jsonify(users), 200  # Returns the list of users as JSON with a 200 status code
     
     # Except block, handles any error that occurs
-    except Exception as e:   
+    except Exception as e: # If any error occurs, handle it here   
         return jsonify({"error": str(e)}), 500  # If there is, returns an error message with exception details and 500 status code
 '''
 /*To test*/
