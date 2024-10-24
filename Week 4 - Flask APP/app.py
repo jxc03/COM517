@@ -93,23 +93,30 @@ $options
 - https://www.mongodb.com/docs/manual/reference/operator/query/regex/#mongodb-query-op.-options
 '''
 
+'''
+Route to get users older than a specified age.
+Accepts `age` as a URL parameter.
+Returns a JSON array of users older than the specified age or an error message if something goes wrong.
+'''
 # Gets users older than a specific age
 @app.route('/users/older_than/<int:age>', methods=['GET'])  # Route for GET requests to fetch users older than a specified age
 def get_users_older_than(age):  # Function to get users older than a specified age
-    try:  # Try to execute this block of code
+    
+    # Try block,  tests the code
+    try:  
+
         # Creates a query to find users older than the specified age
-        query = {'age': {'$gt': age}}  # Filters to find users with age greater than the specified age
+        query = {'age': {'$gt': age}}  # Filters to find users 
+        # Executes the query and converts the results to a list, excluding '_id' field
+        users = list(collection.find(query, {"_id": 0}))  # Gets the results
         
-        # Executes the query and convert results to a list, excluding '_id' field
-        users = list(collection.find(query, {"_id": 0}))  # Get results as a list and exclude '_id' field
-        
-        # Check if no users are found
+        # Checks if no users are found
         if not users:  # If the list of users is empty
-            return jsonify({"message": f"No users found older than {age}"}), 404  # Return a message indicating no users found
-        
-        # Return the list of users
+            return jsonify({"message": f"No users found older than {age}"}), 404  # Returns a message indicating no users found
+        # If users are found
         return jsonify(users), 200  # Return the list of users as JSON with a 200 status code
     
+    # Except block, handles any error that occurs
     except Exception as e:  # If any error occurs, handle it here
         return jsonify({"error": str(e)}), 500  # Return an error message with exception details and 500 status code
 
