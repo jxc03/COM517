@@ -99,7 +99,7 @@ Accepts `age` as a URL parameter.
 Returns a JSON array of users older than the specified age or an error message if something goes wrong.
 '''
 # Gets users older than a specific age
-@app.route('/users/older_than/<int:age>', methods=['GET'])  # Route for GET requests to fetch users older than a specified age
+@app.route('/users/older_than/<int:age>', methods=['GET'])  # Route for GET requests to fetch users older than the specified age
 def get_users_older_than(age):  # Function to get users older than a specified age
     
     # Try block,  tests the code
