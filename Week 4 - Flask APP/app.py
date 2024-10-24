@@ -119,7 +119,15 @@ def get_users_older_than(age):  # Function to get users older than a specified a
     # Except block, handles any error that occurs
     except Exception as e:  # If any error occurs, handle it here
         return jsonify({"error": str(e)}), 500  # Return an error message with exception details and 500 status code
+'''
+/*To test*/
+Url - change number of 40
+http://127.0.0.1:5000/users/older_than/40
 
+/*Links to help understand*/
+$gt
+- https://www.mongodb.com/docs/manual/reference/operator/query/gt/?msockid=290353cdb44a6f1b2eeb470cb5296ee6
+'''
 
 if __name__ == '__main__':
     app.run(debug=True)
