@@ -2,6 +2,8 @@
 Documentation links
 PyMongo - https://pymongo.readthedocs.io/en/stable/index.html#
 MongoDB PyMongo - https://www.mongodb.com/docs/languages/python/pymongo-driver/current/
+Python handling exceptions (try & except) - https://docs.python.org/3/tutorial/errors.html#handling-exceptions
+Python Exception - https://docs.python.org/3/library/exceptions.html#Exception
 '''
 
 from flask import Flask, request, jsonify
