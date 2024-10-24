@@ -69,7 +69,7 @@ def get_users_by_city(city):  # Function to get users by city
 
         # Creates a case-insensitive regex query for matching city names
         query = {'city': {'$regex': city, '$options': 'i'}}  # Filters to find users by city
-        # Executes the query and convert results to a list, excluding '_id' field
+        # Executes the query and convert the results to a list, excluding '_id' field
         users = list(collection.find(query, {"_id": 0}))  # Gets the results 
         
         # Checks if no users are found
