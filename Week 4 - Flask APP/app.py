@@ -21,7 +21,7 @@ Accepts `min_age` and `max_age` as query parameters.
 Returns a JSON array of users within the specified age range or an error message if something goes wrong.
 '''
 # Gets user by age range
-@app.route('/users/age_range', methods=['GET'])  # Defines a route for GET requests to fetch users by age range
+@app.route('/users/age_range', methods=['GET'])  # Route for GET requests to fetch users by age range
 def get_users_by_age_range():  # Function to get users by age range
     try: #Tests the code
 
@@ -59,7 +59,7 @@ request.args.get
 '''
 
 # Gets user by city
-@app.route('/users/city/<city>', methods=['GET'])  # Defines a route for GET requests to fetch users by city
+@app.route('/users/city/<city>', methods=['GET'])  # Route for GET requests to fetch users by city
 def get_users_by_city(city):  # Function to get users by city
     
     # Try block,  tests the code
@@ -91,6 +91,25 @@ $options
 - https://www.mongodb.com/docs/manual/reference/operator/query/regex/#mongodb-query-op.-options
 '''
 
+# Gets users older than a specific age
+@app.route('/users/older_than/<int:age>', methods=['GET'])  # Route for GET requests to fetch users older than a specified age
+def get_users_older_than(age):  # Function to get users older than a specified age
+    try:  # Try to execute this block of code
+        # Creates a query to find users older than the specified age
+        query = {'age': {'$gt': age}}  # Filters to find users with age greater than the specified age
+        
+        # Executes the query and convert results to a list, excluding '_id' field
+        users = list(collection.find(query, {"_id": 0}))  # Get results as a list and exclude '_id' field
+        
+        # Check if no users are found
+        if not users:  # If the list of users is empty
+            return jsonify({"message": f"No users found older than {age}"}), 404  # Return a message indicating no users found
+        
+        # Return the list of users
+        return jsonify(users), 200  # Return the list of users as JSON with a 200 status code
+    
+    except Exception as e:  # If any error occurs, handle it here
+        return jsonify({"error": str(e)}), 500  # Return an error message with exception details and 500 status code
 
 
 if __name__ == '__main__':
