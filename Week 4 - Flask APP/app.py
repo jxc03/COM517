@@ -60,7 +60,7 @@ request.args.get
 - https://docs.python-requests.org/en/latest/index.html#
 '''
 
-# Gets user by city
+# Gets users by city
 @app.route('/users/city/<city>', methods=['GET'])  # Route for GET requests to fetch users by city
 def get_users_by_city(city):  # Function to get users by city
     
@@ -128,6 +128,83 @@ http://127.0.0.1:5000/users/older_than/40
 $gt
 - https://www.mongodb.com/docs/manual/reference/operator/query/gt/?msockid=290353cdb44a6f1b2eeb470cb5296ee6
 '''
+
+'''
+Route to get users whose names start with a specific letter.
+Accepts `letter` as a URL parameter.
+Returns a JSON array of users whose names start with the specified letter or an error message if something goes wrong.
+'''
+#Gets users whose name starts with a specific letter
+@app.route('/users/name_starts_with/<letter>', methods=['GET'])  # Route for GET requests to fetch users by name starting with a specific letter
+def get_users_name_starts_with(letter):  # Function to get users by name starting with a specific letter
+    
+    #Try block, tests the code
+    try:
+        # Creates a case-insensitive regex query for matching names starting with the specified letter
+        query = {'name': {'$regex': f'^{letter}', '$options': 'i'}}  # Filters to find users whose names start with the given letter
+
+        # Executes the query and convert results to a list, excluding '_id' field
+        users = list(collection.find(query, {"_id": 0}))  # Get results as a list 
+        
+        # Checks if no users are found
+        if not users:  # If the list of users is empty
+            return jsonify({"message": f"No users found whose name starts with '{letter}'"}), 404  # Returns a message indicating no users found
+        # If users are found
+        return jsonify(users), 200  # Returns the list of users as JSON with a 200 status code
+    
+    # Except block, handles any error that occurs
+    except Exception as e:  # If any error occurs, handle it here
+        return jsonify({"error": str(e)}), 500  # Returns an error message with exception details and 500 status code
+'''
+/*To test*/
+Url - change number of 40
+http://127.0.0.1:5000/users/older_than/40
+
+/*Links to help understand*/
+^{letter}
+- https://docs.python.org/3/howto/regex.html#more-metacharacters
+- https://docs.python.org/3/howto/regex.html
+'''
+
+'''
+Route to get the youngest user.
+Returns a JSON object of the youngest user or an error message if something goes wrong.
+'''
+# Gets the youngest user
+@app.route('/users/youngest', methods=['GET'])  # Route for GET requests to fetch the youngest user
+def get_youngest_user():  # Function to get the youngest user
+    
+    #Try block, tests the code
+    try: 
+        # Queries the collection to find all users, sorts them by age in ascending order, and limits the results to 1
+        youngest = collection.find({}, {"_id": 0}).sort('age', 1).limit(1)  # Finds the youngest user and exclude '_id' field
+        # Returns the youngest user as JSON with a 200 status code
+        return jsonify(list(youngest)), 200 # Fetches results, makes a list and returns as JSON
+    
+    # Except block, handles any error that occurs
+    except Exception as e:  # If any error occurs, handle it here
+        return jsonify({"error": str(e)}), 500  # Returns an error message with exception details and 500 status code
+
+
+'''
+Route to get the oldest user.
+Returns a JSON object of the oldest user or an error message if something goes wrong.
+'''
+# Gets the oldest user
+@app.route('/users/oldest', methods=['GET'])  # Route for GET requests to fetch the oldest user
+def get_oldest_user():  # Function to get the oldest user
+    
+    #Try block, tests the code
+    try:  
+        # Queries the collection to find all users, sorts them by age in descending order, and limits the results to 1
+        oldest = collection.find({}, {"_id": 0}).sort('age', -1).limit(1)  # Find the oldest user and exclude '_id' field
+        # Returns the oldest user as JSON with a 200 status code
+        return jsonify(list(oldest)), 200  # Convert cursor to list and return as JSON
+    
+    # Except block, handles any error that occurs
+    except Exception as e:  # If any error occurs, handle it here
+        return jsonify({"error": str(e)}), 500  # Returns an error message with exception details and 500 status code
+
 
 if __name__ == '__main__':
     app.run(debug=True)
