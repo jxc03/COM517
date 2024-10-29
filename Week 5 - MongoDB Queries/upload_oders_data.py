@@ -56,7 +56,7 @@ Type checking - https://docs.python.org/3/library/functions.html#type
 
 # Entry point for running the Flask app
 if __name__ == '__main__':
-    app.run(debug=True)  # Runs the Flask application in debug mode
+    app.run(debug=True, port=2000)  # Runs the Flask application in debug mode
 '''
 Reference links:
 Running flask - https://copilot.microsoft.com/?FORM=undexpand&
