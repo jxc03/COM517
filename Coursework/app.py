@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
 import json
+from bson.json_util import dumps
 
 app = Flask(__name__)
 
@@ -36,9 +37,24 @@ def show_all():
 # Show all appendix related concerns
 @app.route('/appendix', methods=['GET'])
 def show_appendix():
-
+    appendix_documents = collection.find({"Category": "Appendix-related concerns"})
+    appendix_documents_list = []
+    for document in appendix_documents:
+        document["_id"] = str(document["_id"])
+        appendix_documents_list.append(document)
+    return jsonify(appendix_documents_list), 200
 
 # Show all method, maths and terminology
+@app.route('/MMT', methods=['GET'])
+def mmt_appendix():
+    mmt_documents = collection.find({"Category": "Method, Mathematics and Terminology"})
+    mmt_documents_list = []
+    for document in mmt_documents:
+        document["_id"] = str(document["_id"])
+        mmt_documents_list.append(document)
+    return jsonify(mmt_documents_list), 200
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=2000)
