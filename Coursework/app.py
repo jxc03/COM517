@@ -33,7 +33,9 @@ def show_all():
     https://geekflare.com/python-unpacking-operators/
     https://docs.python.org/3/tutorial/controlflow.html#index-4
     '''
-
+'''
+Appendix and MMT covers "Select only necessary fields"
+'''
 # Show all appendix related concerns
 @app.route('/appendix', methods=['GET'])
 def show_appendix():
@@ -54,7 +56,11 @@ def mmt_appendix():
         mmt_documents_list.append(document)
     return jsonify(mmt_documents_list), 200
 
-
+'''
+# Find documents that matches user input of field
+@app.route('/match_array', method=['GET'])
+def match_array():
+'''
 
 if __name__ == '__main__':
     app.run(debug=True, port=2000)
