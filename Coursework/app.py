@@ -1,3 +1,11 @@
+'''
+# "Select only neccessary fields"
+- /get_appendix
+- /get_mmt
+# "Match values in an array"
+- /get_math_tags
+'''
+
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
 import json
@@ -33,12 +41,10 @@ def show_all():
     https://geekflare.com/python-unpacking-operators/
     https://docs.python.org/3/tutorial/controlflow.html#index-4
     '''
-'''
-Appendix and MMT covers "Select only necessary fields"
-'''
+
 # Show all appendix related concerns
-@app.route('/appendix', methods=['GET'])
-def show_appendix():
+@app.route('/all_appendix', methods=['GET'])
+def all_appendix():
     appendix_documents = collection.find({"Category": "Appendix-related concerns"})
     appendix_documents_list = []
     for document in appendix_documents:
@@ -47,8 +53,8 @@ def show_appendix():
     return jsonify(appendix_documents_list), 200
 
 # Show all method, maths and terminology
-@app.route('/MMT', methods=['GET'])
-def mmt_appendix():
+@app.route('/all_MMT', methods=['GET'])
+def all_mmt():
     mmt_documents = collection.find({"Category": "Method, Mathematics and Terminology"})
     mmt_documents_list = []
     for document in mmt_documents:
@@ -56,11 +62,39 @@ def mmt_appendix():
         mmt_documents_list.append(document)
     return jsonify(mmt_documents_list), 200
 
-'''
-# Find documents that matches user input of field
-@app.route('/match_array', method=['GET'])
-def match_array():
-'''
+
+# Get appendix related concerns with relevant information 
+@app.route('/get_appendix', methods=['GET'])
+def get_appendix():
+    appendix_documents = collection.find({"Category": "Method, Mathematics and Terminology"}, {"Category": 1, "Comment": 1, "Date": 1, "Severity": 1, "Priority": 1, "Suggested Action": 1}) # Selects only 
+    result = [{"Category": document["Category"], "Comment": document["Comment"], "Date": document["Date"], "Severity": document["Severity"], "Priority": document["Priority"], "Suggested Action": document["Suggested Action"]} for document in appendix_documents] # Stores to a list
+    return jsonify(result) # Outputs the list
+
+# Get method, maths and terminology with relevant information 
+@app.route('/get_mmt', methods=['GET'])
+def get_mmt():
+    appendix_documents = collection.find({"Category": "Method, Mathematics and Terminology"}, {"Category": 1, "Comment": 1, "Date": 1, "Severity": 1, "Priority": 1, "Suggested Action": 1})
+    result = [{"Category": document["Category"], "Comment": document["Comment"], "Date": document["Date"], "Severity": document["Severity"], "Priority": document["Priority"], "Suggested Action": document["Suggested Action"]} for document in appendix_documents]
+    return jsonify(result)
+
+# Get all the document that has the 'tag' of 'math'    
+@app.route('/get_math_tags', methods=['GET'])
+def get_math_tags(): 
+    tags = collection.find({"Tags": {"$in": ["math"]}})
+    result = [{"Category:": document["Category"],
+               "Comment": document["Comment"],
+               "Date": document["Date"],
+               "Type": document["Type"],
+               "Severity": document["Severity"],
+               "Priority": document["Priority"],
+               "Suggested Action": document["Suggested Action"],
+               "Status": document["Status"],
+               "Tags": document["Tags"]} for document in tags] 
+    return jsonify(result)
+# Type is at the bottom; fix later on
+
+# Get appendix that have the 'severity' of 'high'
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=2000)
