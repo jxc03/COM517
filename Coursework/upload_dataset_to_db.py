@@ -1,3 +1,4 @@
+'''
 import json
 from pymongo import MongoClient, errors
 
@@ -44,6 +45,55 @@ def main():
         print(result)
     except Exception as e:
         print(f"An error occurred: {e}")
+'''
 
-if __name__ == '__main__':
-    main()  # Run the main function
+import json  # Import JSON module for reading/writing JSON files
+from pymongo import MongoClient
+import os  # Import os module to check file existence
+
+# MongoDB connection
+mongo_uri = "mongodb://localhost:27017/"
+database_name = "coursework_db"
+collection_name = "categories"
+
+def upload_data():
+    try: 
+        file_path = 'coursework\dataset_json.json'  # File path for JSON data
+        print(f"Reading JSON file: {file_path}")  # Display to terminal
+
+        # Verify file path
+        if not os.path.exists(file_path):
+            print(f"Error: File not found")
+            print("Please ensure the file path is correct")
+            return
+
+         # Read JSON data
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+
+        # Connect to MongoDB
+        client = MongoClient(mongo_uri)
+        db = client[database_name]
+        collection = db[collection_name]
+        print(f"Connected to MongoDB: {database_name}")
+
+        # Check for existing data
+        if collection.count_documents({}) > 0:
+            action = input("Database contains data. (c)lear, (a)ppend, or (x)cancel?: ").lower()
+            if action == 'c':
+                collection.delete_many({})
+                print("Existing data cleared")
+            elif action != 'a':
+                print("Import cancelled")
+                return
+
+        # Import data
+        result = collection.insert_many(data)
+        print(f"Successfully imported {len(result.inserted_ids)} documents")
+
+    # Handle exception errors   
+    except Exception as err:
+        print(f"Error: {str(err)}")
+
+if __name__ == "__main__":
+    upload_data()
