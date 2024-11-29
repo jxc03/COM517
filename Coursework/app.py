@@ -10,6 +10,8 @@
 /get_appendix_missingContent_tag
 # "Iterating over result sets"
 /get_doc_15th_onwards
+# "Query embedded documents and arrays"
+/get_editor_reviewers
 '''
 
 from flask import Flask, request, jsonify
@@ -146,6 +148,13 @@ def get_doc_15th_onwards():
                } for document in document_finder]
     return jsonify(result)
 # Format of the output array can be better to represent the MongoDB document
+
+# Get reviewers with the 'role' of 'editor'
+@app.route('/get_editor_reviewers', methods=['GET'])
+def get_editor_reviewers():
+    editor_reviewers = collection.find({"Reviewer Details.role": {"$regex": "^editor$", "$options": "i"}})
+    result = [{"Reviewer Details": r_editor["Reviewer Details"]} for r_editor in editor_reviewers]
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(debug=True, port=2000)
