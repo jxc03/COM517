@@ -1,9 +1,15 @@
 '''
 # "Select only neccessary fields"
-- /get_appendix
-- /get_mmt
+/get_appendix
+/get_mmt
 # "Match values in an array"
-- /get_math_tags
+/get_math_tags
+# "Match array element with multiple criteria
+/get_mmt_severity_high
+# "Match arrays containing all specified elements 
+/get_appendix_missingContent_tag
+# "Iterating over result sets"
+/get_doc_15th_onwards
 '''
 
 from flask import Flask, request, jsonify
@@ -62,7 +68,6 @@ def all_mmt():
         mmt_documents_list.append(document)
     return jsonify(mmt_documents_list), 200
 
-
 # Get appendix related concerns with relevant information 
 @app.route('/get_appendix', methods=['GET'])
 def get_appendix():
@@ -115,6 +120,30 @@ def get_appendix_missingContent_tag():
     for document in documents:
         document["_id"] = str(document["_id"])
         result.append(document)
+    return jsonify(result)
+# Format of the output array can be better to represent the MongoDB document
+
+# Get documents from 15/01/2024 onwards 
+@app.route('/get_doc_15th_onwards', methods=['GET'])
+def get_doc_15th_onwards():
+    document_finder = collection.find({"Date": {"$gte": "20/01/2024"}}) 
+    result = [{"Category": document["Category"],
+               "Comment": document["Comment"],
+               "Date": document["Date"],
+               "Type": document["Type"],
+               "Severity": document["Severity"],
+               "Priority": document["Priority"],
+               "Suggested Action": document["Suggested Action"],
+               "Status": document["Status"],
+               "Tags": document["Tags"],
+               "Date Reviewed": document["Date Reviewed"],
+               "Reviewer ID": document["Reviewer ID"],
+               "Reviewer Details": document["Reviewer Details"],
+               "Resolved": document["Resolved"],
+               "Resolution Date": document["Resolution Date"],
+               "Additional Notes": document["Additional Notes"],
+               "Impact": document["Impact"]
+               } for document in document_finder]
     return jsonify(result)
 # Format of the output array can be better to represent the MongoDB document
 
