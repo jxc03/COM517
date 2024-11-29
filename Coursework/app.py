@@ -93,7 +93,17 @@ def get_math_tags():
     return jsonify(result)
 # Type is at the bottom; fix later on
 
-# Get appendix that have the 'severity' of 'high'
+# Get mmt documents that have the 'tag' of 'method' and the 'severity' of 'high'
+@app.route('/get_mmt_severity_high', methods=['GET'])
+def get_appendix_severity_high():
+    docs = collection.find(
+        {
+            "Tags": {"$in": ["method"]},
+            "Severity": "High"
+        }, 
+        {'_id': 0})
+    result = list(docs)
+    return jsonify(result)
 
 
 if __name__ == '__main__':
