@@ -116,6 +116,7 @@ def get_appendix_missingContent_tag():
         document["_id"] = str(document["_id"])
         result.append(document)
     return jsonify(result)
+# Format of the output array can be better to represent the MongoDB document
 
 if __name__ == '__main__':
     app.run(debug=True, port=2000)
