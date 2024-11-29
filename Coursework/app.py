@@ -95,16 +95,36 @@ def get_math_tags():
 
 # Get mmt documents that have the 'tag' of 'method' and the 'severity' of 'high'
 @app.route('/get_mmt_severity_high', methods=['GET'])
-def get_appendix_severity_high():
-    docs = collection.find(
+def get_mmt_severity_high():
+    documents = collection.find(
         {
             "Tags": {"$in": ["method"]},
             "Severity": "High"
         }, 
         {'_id': 0})
-    result = list(docs)
+    result = list(documents)
     return jsonify(result)
 
+# Get documents with the 'tag' of 'appendix' and 'missing content' 
+@app.route('/get_appendix_missingContent_tag', methods=['GET'])
+def get_appendix_missingContent_tag():
+    documents = collection.find({
+        "$and": [
+            {"Tags": {"$regex": "^appendix$", "$options": "i"}},
+            {"Tags": {"$regex": "^missing content$", "$options": "i"}}
+        ]
+    })
+    result = []
+    for document in documents:
+        document["_id"] = str(document["_id"])
+        result.append(document)
+    return jsonify(result)
+# Format of the output array can be better to represent the MongoDB document
+'''
+$regex for pattern matching
+^ and $ matches the whole tag
+$option: i makes it case insensitive
+'''
 
 if __name__ == '__main__':
     app.run(debug=True, port=2000)
