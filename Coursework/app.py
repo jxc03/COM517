@@ -88,7 +88,6 @@ def get_math_tags():
 # Type is at the bottom; fix later on
 
 # "Match array element with multiple criteria"
-# Uses old dataset
 # Get mmt documents that have the tag of method and the severity of high and priority of high
 @app.route('/get_mmt_severity_high', methods=['GET'])
 def get_mmt_severity_high():
@@ -168,13 +167,41 @@ def get_important_technical_tag():
     for document in documents:
         document["_id"] = str(document["_id"]) # Converts MongoDB ObjectID to a string
         # Code to only include tags with importance that is equal or more than 4
-        matching_tags = []
+        filter_tags = []
         for tag in document["Tags"]:
             if tag["category"] == "technical" and tag["importance"] >= 4:
-                matching_tags.append(tag)
-        document["Tags"] = matching_tags # Updates the document with correct tag data
+                filter_tags.append(tag)
+        document["Tags"] = filter_tags # Updates the document with correct tag data
         result.append(document)
     return jsonify(result)
+
+# "Match arrays with all elements specified"
+# Get all documents that has the tag information specified
+@app.route('/get_specified_tag', methods=['GET'])
+def get_specified_tag():
+    documents = collection.find({"Tags":[
+        {
+            "name": "method", 
+            "importance": 5,
+            "category": "content",
+            "dateAdded": "06/02/2024"
+        },
+        {
+            "name": "justification", 
+            "importance": 5,
+            "category": "structure",
+            "dateAdded": "06/02/2024"
+        }
+    ]})
+    result = []
+    for document in documents:
+        document["_id"] = str(document["_id"])
+        result.append(document)
+    return jsonify(result)
+
+# Get all status pending documents
+@app.route('/get_status_pending', methods=['GET'])
+def get_status_pending():
 
 
 if __name__ == '__main__':
