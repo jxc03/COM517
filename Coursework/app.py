@@ -54,7 +54,7 @@ def all_mmt():
         mmt_documents_list.append(document)
     return jsonify(mmt_documents_list), 200
 
-# "Select only neccessary fields
+# "Select only neccessary fields"
 # Get appendix related concerns with relevant information 
 @app.route('/get_appendix', methods=['GET'])
 def get_appendix():
@@ -62,7 +62,7 @@ def get_appendix():
     result = [{"Category": document["Category"], "Comment": document["Comment"], "Date": document["Date"], "Severity": document["Severity"], "Priority": document["Priority"], "Suggested Action": document["Suggested Action"]} for document in appendix_documents] # Stores to a list
     return jsonify(result) # Outputs the list
 
-# "Select only neccessary fields
+# "Select only neccessary fields"
 # Get method, maths and terminology with relevant information 
 @app.route('/get_mmt', methods=['GET'])
 def get_mmt():
@@ -74,7 +74,7 @@ def get_mmt():
 # Get all the document that has the 'tag' of 'math'    
 @app.route('/get_math_tags', methods=['GET'])
 def get_math_tags(): 
-    tags = collection.find({"Tags": {"$in": ["math"]}})
+    tags = collection.find({"Tags.name": {"$in": ["math"]}})
     result = [{"Category:": document["Category"],
                "Comment": document["Comment"],
                "Date": document["Date"],
@@ -88,7 +88,8 @@ def get_math_tags():
 # Type is at the bottom; fix later on
 
 # "Match array element with multiple criteria"
-# Get mmt documents that have the 'tag' of 'method' and the 'severity' of 'high'
+# Uses old dataset
+# Get mmt documents that have the tag of method and the severity of high and priority of high
 @app.route('/get_mmt_severity_high', methods=['GET'])
 def get_mmt_severity_high():
     documents = collection.find(
@@ -98,19 +99,20 @@ def get_mmt_severity_high():
         #}, 
         #{'_id': 0})
         {
-            "Tags": {"$elemMatch": {"$eq": "method"}},
-            "Severity": "High"
+            "Tags": {"$elemMatch": {"name": "method"}},
+            "Severity": "High",
+            "Priority": "Critical"
         },
         {"_id": 0})
     result = list(documents)
     return jsonify(result)
 
 # "Match arrays containing all specified elements 
-# Get documents with the 'tag' of 'appendix' and 'missing content' 
+# Get documents with the tag of appendix and missing content
 @app.route('/get_appendix_missingContent_tag', methods=['GET'])
 def get_appendix_missingContent_tag():
     documents = collection.find(
-        {"Tags": {"$all": ["appendix", "missing content"]}},
+        {"Tags.name": {"$all": ["appendix", "missing content"]}},
     )
     result = []
     for document in documents:
@@ -145,12 +147,35 @@ def get_doc_15th_onwards():
 # Format of the output array can be better to represent the MongoDB document
 
 # "Query embedded documents and arrays"
-# Get reviewers with the 'role' of 'editor'
+# Get reviewers with the role of editor
 @app.route('/get_editor_reviewers', methods=['GET'])
 def get_editor_reviewers():
     editor_reviewers = collection.find({"Reviewer Details.role": {"$regex": "^editor$", "$options": "i"}})
     result = [{"Reviewer Details": r_editor["Reviewer Details"]} for r_editor in editor_reviewers]
     return jsonify(result)
+
+# "Match elements in arrays with criteria"
+# Get documents with the tag of importance of 
+@app.route('/get_important_technical_tag', methods=['GET'])
+def get_important_technical_tag():
+    documents = collection.find({
+        "Tags": {"$elemMatch": {
+            "category": "technical",
+            "importance": {"$gte": 4}
+        }}
+    })
+    result = []
+    for document in documents:
+        document["_id"] = str(document["_id"]) # Converts MongoDB ObjectID to a string
+        # Code to only include tags with importance that is equal or more than 4
+        matching_tags = []
+        for tag in document["Tags"]:
+            if tag["category"] == "technical" and tag["importance"] >= 4:
+                matching_tags.append(tag)
+        document["Tags"] = matching_tags # Updates the document with correct tag data
+        result.append(document)
+    return jsonify(result)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=2000)
