@@ -199,10 +199,16 @@ def get_specified_tag():
         result.append(document)
     return jsonify(result)
 
+# "Perform text search"
 # Get all status pending documents
 @app.route('/get_status_pending', methods=['GET'])
 def get_status_pending():
-
+    status_pending = collection.find({"$text": {"$search": "\"Fundamental flaws in methodology have been noted\""}})
+    result = []
+    for document in status_pending:
+        document["_id"] = str(document["_id"])
+        result.append(document)
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(debug=True, port=2000)
