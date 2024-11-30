@@ -1,19 +1,3 @@
-'''
-# "Select only neccessary fields"
-/get_appendix
-/get_mmt
-# "Match values in an array"
-/get_math_tags
-# "Match array element with multiple criteria
-/get_mmt_severity_high
-# "Match arrays containing all specified elements 
-/get_appendix_missingContent_tag
-# "Iterating over result sets"
-/get_doc_15th_onwards
-# "Query embedded documents and arrays"
-/get_editor_reviewers
-'''
-
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
 import json
@@ -70,6 +54,7 @@ def all_mmt():
         mmt_documents_list.append(document)
     return jsonify(mmt_documents_list), 200
 
+# "Select only neccessary fields
 # Get appendix related concerns with relevant information 
 @app.route('/get_appendix', methods=['GET'])
 def get_appendix():
@@ -77,6 +62,7 @@ def get_appendix():
     result = [{"Category": document["Category"], "Comment": document["Comment"], "Date": document["Date"], "Severity": document["Severity"], "Priority": document["Priority"], "Suggested Action": document["Suggested Action"]} for document in appendix_documents] # Stores to a list
     return jsonify(result) # Outputs the list
 
+# "Select only neccessary fields
 # Get method, maths and terminology with relevant information 
 @app.route('/get_mmt', methods=['GET'])
 def get_mmt():
@@ -84,6 +70,7 @@ def get_mmt():
     result = [{"Category": document["Category"], "Comment": document["Comment"], "Date": document["Date"], "Severity": document["Severity"], "Priority": document["Priority"], "Suggested Action": document["Suggested Action"]} for document in appendix_documents]
     return jsonify(result)
 
+# "Match values in an array"
 # Get all the document that has the 'tag' of 'math'    
 @app.route('/get_math_tags', methods=['GET'])
 def get_math_tags(): 
@@ -100,18 +87,25 @@ def get_math_tags():
     return jsonify(result)
 # Type is at the bottom; fix later on
 
+# "Match array element with multiple criteria"
 # Get mmt documents that have the 'tag' of 'method' and the 'severity' of 'high'
 @app.route('/get_mmt_severity_high', methods=['GET'])
 def get_mmt_severity_high():
     documents = collection.find(
+        #{
+            #"Tags": {"$in": ["method"]},
+            #"Severity": "High"
+        #}, 
+        #{'_id': 0})
         {
-            "Tags": {"$in": ["method"]},
+            "Tags": {"$elemMatch": {"$eq": "method"}},
             "Severity": "High"
-        }, 
-        {'_id': 0})
+        },
+        {"_id": 0})
     result = list(documents)
     return jsonify(result)
 
+# "Match arrays containing all specified elements 
 # Get documents with the 'tag' of 'appendix' and 'missing content' 
 @app.route('/get_appendix_missingContent_tag', methods=['GET'])
 def get_appendix_missingContent_tag():
@@ -125,6 +119,7 @@ def get_appendix_missingContent_tag():
     return jsonify(result)
 # Format of the output array can be better to represent the MongoDB document
 
+# "Iterating over result sets"
 # Get documents from 15/01/2024 onwards 
 @app.route('/get_doc_15th_onwards', methods=['GET'])
 def get_doc_15th_onwards():
@@ -149,6 +144,7 @@ def get_doc_15th_onwards():
     return jsonify(result)
 # Format of the output array can be better to represent the MongoDB document
 
+# "Query embedded documents and arrays"
 # Get reviewers with the 'role' of 'editor'
 @app.route('/get_editor_reviewers', methods=['GET'])
 def get_editor_reviewers():
