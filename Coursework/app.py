@@ -214,10 +214,103 @@ def get_status_pending():
         result.append(document)
     return jsonify(result)
 
+collection.create_index([
+    ("Comment", "text"),
+    ("Category", "text")
+    ("Additional notes", "text")
+    ("Suggested action", "text")
+])
+@app.route('/search', methods=['GET'])
+def text_search():
+    search_text = request.args.get('query', '')
+    try:
+        results = collection.find(
+            {"$text": {"$search": text_search}},
+        )
+    except Exception as err:
+        return jsonify({"Error": str(err)}, 500)
 '''
 Transformations
 '''
 # Update 
+
+
+'''
+@app.route('/reviewer-analytics', methods=['GET'])
+def reviewer_analytics():
+    pipeline = [
+        {
+            '$addFields': {
+                'parsedResolutionDate': {
+                    '$dateFromString': {
+                        'dateString': '$Resolution Date',
+                        'format': '%d/%m/%Y'
+                    }
+                },
+                'parsedDate': {
+                    '$dateFromString': {
+                        'dateString': '$Date',
+                        'format': '%d/%m/%Y'
+                    }
+                }
+            }
+        },
+        {
+            '$project': {
+                '_id': 0,
+                'reviewerInfo': {
+                    'reviewerId': '$Reviewer ID',
+                    'name': '$Reviewer Details.name',
+                    'role': '$Reviewer Details.role'
+                },
+                'issueMetrics': {
+                    'category': '$Category',
+                    'severity': '$Severity',
+                    'daysToResolve': {
+                        '$cond': {
+                            'if': '$Resolved',
+                            'then': {
+                                '$toString': {
+                                    '$round': [
+                                        {'$divide': [
+                                            {'$subtract': ['$parsedResolutionDate', '$parsedDate']},
+                                            (1000 * 60 * 60 * 24)
+                                        ]}, 
+                                        1
+                                    ]
+                                }
+                            },
+                            'else': None
+                        }
+                    }
+                },
+                'tagAnalysis': {
+                    '$map': {
+                        'input': '$Tags',
+                        'as': 'tag',
+                        'in': {
+                            'tagName': '$$tag.name',
+                            'importanceLevel': '$$tag.importance',
+                            'categoryType': '$$tag.category'
+                        }
+                    }
+                },
+                'status': '$Status',
+                'impact': '$Impact',
+                'additionalNotes': '$Additional Notes'
+            }
+        },
+        {
+            '$sort': {
+                'issueMetrics.severity': -1,
+                'status': 1
+            }
+        }
+    ]
+    
+    results = list(collection.aggregate(pipeline))
+    return jsonify(results)
+'''
 
 if __name__ == '__main__':
     app.run(debug=True, port=2000)
