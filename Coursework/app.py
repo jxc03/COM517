@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from pymongo import MongoClient
 import json
 from bson.json_util import loads, dumps
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -205,6 +206,7 @@ def get_specified_tag():
 
 # "Perform text search"
 # Get all status pending documents
+'''
 @app.route('/get_status_pending', methods=['GET'])
 def get_status_pending():
     status_pending = collection.find({"\"$text": {"\"$search": "\"Fundamental flaws in methodology have been noted\""}})
@@ -213,7 +215,8 @@ def get_status_pending():
         document["_id"] = str(document["_id"])
         result.append(document)
     return jsonify(result)
-
+'''
+'''
 collection.create_index([
     ("Comment", "text"),
     ("Category", "text")
@@ -229,11 +232,111 @@ def text_search():
         )
     except Exception as err:
         return jsonify({"Error": str(err)}, 500)
+
+'''
 '''
 Transformations
 '''
-# Update 
+# Conditional update 
+# Update documents with priority to critical if severity is high and impact is major
+app.route('/update_priority', methods=['PUT'])
+def update_priority():
+    try:
+        update_fields = list(collection.find({
+            "Severity": "High",
+            "Impact": "Major",
+            "Resolved": False,
+            "Priority": {"$ne": "Critical"}
+        }))
+    
+        result = collection.update_many(
+            {
+                "Severity": "High",
+                "Impact": "Major",
+                "Resolved": False,
+                "Priority": {"$ne": "Critical"}
+            },
+            {
+                "$set": {
+                    "Priority": "Critical",
+                    "Last Modified": datetime.now()
+                },
+                "$push": {
+                    "Update History": {
+                        "field": "Priority",
+                        "old_value": "$Priority",
+                        "new_value": "Critical",
+                        "Date": datetime.now()
+                    }
+                }
+            }
+        )
+        updated_documents = []
+        if update_fields:
+            updated_ids = [document["_id"] for document in update_fields]
+            updated_documents = list(collection.find({"_id": {"$in": updated_ids}}))
+            for document in updated_documents:
+                document["_id"] = str(document["_id"])
+        
+        return jsonify(
+            {"Modified count": result.modified_count},
+            {"Modified documents": json.loads(dumps(updated_documents))}
+        )
+    except Exception as err:
+        return jsonify({"error": str(err)}), 500
 
+#Works
+@app.route('/update_priority2', methods=['GET', 'PUT'])
+def update_priority2():
+    if request.method == 'PUT':
+        try:
+            update_fields = list(collection.find({
+                "Severity": "High",
+                "Impact": "Major",
+                "Resolved": False,
+                "Priority": {"$ne": "Critical"}
+            }))
+            
+            result = collection.update_many(
+                {
+                    "Severity": "High",
+                    "Impact": "Major",
+                    "Resolved": False,
+                    "Priority": {"$ne": "Critical"}
+                },
+                {
+                    "$set": {
+                        "Priority": "Critical",
+                        "Last_Modified": datetime.now()
+                    },
+                    "$push": {
+                        "Update_History": {
+                            "field": "Priority",
+                            "old_value": "$Priority",
+                            "new_value": "Critical",
+                            "date": datetime.now()
+                        }
+                    }
+                }
+            )
+
+            updated_documents = []
+            if update_fields:
+                updated_ids = [document["_id"] for document in update_fields]
+                updated_documents = list(collection.find({"_id": {"$in": updated_ids}}))
+                for document in updated_documents:
+                    document["_id"] = str(document["_id"])
+         
+            return jsonify({
+                "modified_count": result.modified_count,
+                "modified_documents": json.loads(dumps(updated_documents))
+            })
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    
+    # Handle GET request
+    return jsonify({"message": "Please use PUT method to update priorities"})
 
 '''
 @app.route('/reviewer-analytics', methods=['GET'])
