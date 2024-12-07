@@ -1,0 +1,608 @@
+[{
+  "_id": {
+    "$oid": "6749a9ace9d76968da287721"
+  },
+  "Category": "Appendix-related concerns",
+  "Comment": "An appendix should have been included",
+  "Date": "02/01/2024",
+  "Type": "Content Structure",
+  "Severity": "High",
+  "Priority": "Critical",
+  "Suggested Action": "Add missing appendix",
+  "Status": "Pending",
+  "Tags": [
+    {
+      "name": "appendix",
+      "importance": 3,
+      "category": "structure",
+      "dateAdded": "19/01/2024"
+    },
+    {
+      "name": "missing content",
+      "importance": 3,
+      "category": "structure",
+      "dateAdded": "14/02/2024"
+    }
+  ],
+  "Date Reviewed": "03/01/2024",
+  "Reviewer ID": "R1",
+  "Reviewer Details": {
+    "id": "R1",
+    "name": "Aidan McDonnell",
+    "role": "Editor"
+  },
+  "Resolved": false,
+  "Resolution Date": null,
+  "Additional Notes": "Document lacks crucial references",
+  "Impact": "Major"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da287722"
+  },
+  "Category": "Appendix-related concerns",
+  "Comment": "More use should have been made of the appendix, to de-clutter the document",
+  "Date": "05/01/2024",
+  "Type": "Content Structure",
+  "Severity": "Medium",
+  "Priority": "High",
+  "Suggested Action": "Restructure document content",
+  "Status": "Completed",
+  "Tags": [
+    {
+      "name": "appendix",
+      "importance": 5,
+      "category": "technical",
+      "dateAdded": "27/01/2024"
+    },
+    {
+      "name": "organization",
+      "importance": 3,
+      "category": "content",
+      "dateAdded": "19/02/2024"
+    }
+  ],
+  "Date Reviewed": "06/01/2024",
+  "Reviewer ID": "R2",
+  "Reviewer Details": {
+    "id": "R2",
+    "name": "Ciaran O'Neill",
+    "role": "Reviewer"
+  },
+  "Resolved": true,
+  "Resolution Date": "07/01/2024",
+  "Additional Notes": "Helped reduce main document clutter",
+  "Impact": "Moderate"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da287723"
+  },
+  "Category": "Appendix-related concerns",
+  "Comment": "The appendix should be split into a number of appendices to reflect different aspects",
+  "Date": "08/01/2024",
+  "Type": "Content Structure",
+  "Severity": "Medium",
+  "Priority": "Medium",
+  "Suggested Action": "Divide appendix into sections",
+  "Status": "In Progress",
+  "Tags": [
+    {
+      "name": "appendix",
+      "importance": 5,
+      "category": "technical",
+      "dateAdded": "10/02/2024"
+    },
+    {
+      "name": "structuring",
+      "importance": 3,
+      "category": "structure",
+      "dateAdded": "17/02/2024"
+    }
+  ],
+  "Date Reviewed": "09/01/2024",
+  "Reviewer ID": "R3",
+  "Reviewer Details": {
+    "id": "R3",
+    "name": "Siobhan Gallagher",
+    "role": "Reviewer"
+  },
+  "Resolved": false,
+  "Resolution Date": null,
+  "Additional Notes": "Helps in easier navigation of appendix",
+  "Impact": "Moderate"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da287724"
+  },
+  "Category": "Appendix-related concerns",
+  "Comment": "The appendix is excessively large and requires rationalisation of the material included",
+  "Date": "10/01/2024",
+  "Type": "Content Structure",
+  "Severity": "High",
+  "Priority": "High",
+  "Suggested Action": "Reduce appendix content",
+  "Status": "Completed",
+  "Tags": [
+    {
+      "name": "appendix",
+      "importance": 2,
+      "category": "methodology",
+      "dateAdded": "24/02/2024"
+    },
+    {
+      "name": "content reduction",
+      "importance": 3,
+      "category": "quality",
+      "dateAdded": "13/02/2024"
+    }
+  ],
+  "Date Reviewed": "11/01/2024",
+  "Reviewer ID": "R4",
+  "Reviewer Details": {
+    "id": "R4",
+    "name": "Eoin McLaughlin",
+    "role": "Editor"
+  },
+  "Resolved": true,
+  "Resolution Date": "12/01/2024",
+  "Additional Notes": "Unnecessary details increase document length",
+  "Impact": "Major"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da287725"
+  },
+  "Category": "Appendix-related concerns",
+  "Comment": "Vital material meritorious of inclusion in the main document has been relegated to the appendix",
+  "Date": "12/01/2024",
+  "Type": "Content Structure",
+  "Severity": "High",
+  "Priority": "Critical",
+  "Suggested Action": "Move to main document",
+  "Status": "Completed",
+  "Tags": [
+    {
+      "name": "appendix",
+      "importance": 4,
+      "category": "methodology",
+      "dateAdded": "14/01/2024"
+    },
+    {
+      "name": "main content",
+      "importance": 4,
+      "category": "methodology",
+      "dateAdded": "26/01/2024"
+    }
+  ],
+  "Date Reviewed": "13/01/2024",
+  "Reviewer ID": "R2",
+  "Reviewer Details": {
+    "id": "R2",
+    "name": "Ciaran O'Neill",
+    "role": "Reviewer"
+  },
+  "Resolved": true,
+  "Resolution Date": "14/01/2024",
+  "Additional Notes": "Important sections should not be buried in appendix",
+  "Impact": "Major"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da287726"
+  },
+  "Category": "Method, Mathematics and Terminology",
+  "Comment": "The method/methodology lacks justification and fails to consider alternative approaches",
+  "Date": "14/01/2024",
+  "Type": "Methodology",
+  "Severity": "High",
+  "Priority": "Critical",
+  "Suggested Action": "Add justification and compare",
+  "Status": "Pending",
+  "Tags": [
+    {
+      "name": "method",
+      "importance": 5,
+      "category": "content",
+      "dateAdded": "06/02/2024"
+    },
+    {
+      "name": "justification",
+      "importance": 5,
+      "category": "structure",
+      "dateAdded": "06/02/2024"
+    }
+  ],
+  "Date Reviewed": "15/01/2024",
+  "Reviewer ID": "R5",
+  "Reviewer Details": {
+    "id": "R5",
+    "name": "Maeve Doherty",
+    "role": "Analyst"
+  },
+  "Resolved": false,
+  "Resolution Date": null,
+  "Additional Notes": "Methodology lacks rigorous justification",
+  "Impact": "Major"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da287727"
+  },
+  "Category": "Method, Mathematics and Terminology",
+  "Comment": "The method/methodology is not well documented; lacks clarity and detail for reader follow-through",
+  "Date": "16/01/2024",
+  "Type": "Methodology",
+  "Severity": "Medium",
+  "Priority": "High",
+  "Suggested Action": "Add detailed explanations",
+  "Status": "Completed",
+  "Tags": [
+    {
+      "name": "method",
+      "importance": 2,
+      "category": "technical",
+      "dateAdded": "23/02/2024"
+    },
+    {
+      "name": "clarity",
+      "importance": 2,
+      "category": "quality",
+      "dateAdded": "14/02/2024"
+    }
+  ],
+  "Date Reviewed": "17/01/2024",
+  "Reviewer ID": "R6",
+  "Reviewer Details": {
+    "id": "R6",
+    "name": "Padraig Maguire",
+    "role": "Reviewer"
+  },
+  "Resolved": true,
+  "Resolution Date": "18/01/2024",
+  "Additional Notes": "Document requires enhanced readability",
+  "Impact": "Moderate"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da287728"
+  },
+  "Category": "Method, Mathematics and Terminology",
+  "Comment": "Important assumptions have not been addressed/stated",
+  "Date": "18/01/2024",
+  "Type": "Methodology",
+  "Severity": "High",
+  "Priority": "Critical",
+  "Suggested Action": "Specify assumptions",
+  "Status": "Pending",
+  "Tags": [
+    {
+      "name": "method",
+      "importance": 4,
+      "category": "structure",
+      "dateAdded": "13/01/2024"
+    },
+    {
+      "name": "assumptions",
+      "importance": 4,
+      "category": "structure",
+      "dateAdded": "28/01/2024"
+    }
+  ],
+  "Date Reviewed": "19/01/2024",
+  "Reviewer ID": "R1",
+  "Reviewer Details": {
+    "id": "R1",
+    "name": "Aidan McDonnell",
+    "role": "Editor"
+  },
+  "Resolved": false,
+  "Resolution Date": null,
+  "Additional Notes": "Missing assumptions can lead to incorrect conclusions",
+  "Impact": "Major"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da287729"
+  },
+  "Category": "Method, Mathematics and Terminology",
+  "Comment": "Fundamental flaws in methodology have been noted",
+  "Date": "20/01/2024",
+  "Type": "Methodology",
+  "Severity": "Critical",
+  "Priority": "Critical",
+  "Suggested Action": "Re-evaluate methodology",
+  "Status": "Pending",
+  "Tags": [
+    {
+      "name": "method",
+      "importance": 1,
+      "category": "quality",
+      "dateAdded": "18/01/2024"
+    },
+    {
+      "name": "flaws",
+      "importance": 5,
+      "category": "quality",
+      "dateAdded": "14/01/2024"
+    }
+  ],
+  "Date Reviewed": "21/01/2024",
+  "Reviewer ID": "R5",
+  "Reviewer Details": {
+    "id": "R5",
+    "name": "Maeve Doherty",
+    "role": "Analyst"
+  },
+  "Resolved": false,
+  "Resolution Date": null,
+  "Additional Notes": "Requires urgent review due to fundamental issues",
+  "Impact": "Critical"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da28772a"
+  },
+  "Category": "Method, Mathematics and Terminology",
+  "Comment": "Standard approaches have not been adopted without explanation",
+  "Date": "22/01/2024",
+  "Type": "Methodology",
+  "Severity": "Medium",
+  "Priority": "Medium",
+  "Suggested Action": "Justify deviations",
+  "Status": "Completed",
+  "Tags": [
+    {
+      "name": "method",
+      "importance": 1,
+      "category": "technical",
+      "dateAdded": "14/02/2024"
+    },
+    {
+      "name": "standards",
+      "importance": 5,
+      "category": "technical",
+      "dateAdded": "07/01/2024"
+    }
+  ],
+  "Date Reviewed": "23/01/2024",
+  "Reviewer ID": "R2",
+  "Reviewer Details": {
+    "id": "R2",
+    "name": "Ciaran O'Neill",
+    "role": "Reviewer"
+  },
+  "Resolved": true,
+  "Resolution Date": "24/01/2024",
+  "Additional Notes": "Justification for deviations is needed",
+  "Impact": "Moderate"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da28772b"
+  },
+  "Category": "Method, Mathematics and Terminology",
+  "Comment": "Errors in the presentation of mathematics, e.g., wrong symbols or layout issues",
+  "Date": "24/01/2024",
+  "Type": "Mathematical Detail",
+  "Severity": "High",
+  "Priority": "High",
+  "Suggested Action": "Correct errors",
+  "Status": "In Progress",
+  "Tags": [
+    {
+      "name": "math",
+      "importance": 4,
+      "category": "technical",
+      "dateAdded": "21/02/2024"
+    },
+    {
+      "name": "errors",
+      "importance": 1,
+      "category": "technical",
+      "dateAdded": "18/02/2024"
+    }
+  ],
+  "Date Reviewed": "25/01/2024",
+  "Reviewer ID": "R6",
+  "Reviewer Details": {
+    "id": "R6",
+    "name": "Padraig Maguire",
+    "role": "Reviewer"
+  },
+  "Resolved": false,
+  "Resolution Date": null,
+  "Additional Notes": "Flaws in equations may lead to misinterpretation",
+  "Impact": "Major"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da28772c"
+  },
+  "Category": "Method, Mathematics and Terminology",
+  "Comment": "Equations/expressions have not been properly numbered in sequence",
+  "Date": "26/01/2024",
+  "Type": "Mathematical Detail",
+  "Severity": "Low",
+  "Priority": "Low",
+  "Suggested Action": "Add numbering",
+  "Status": "Completed",
+  "Tags": [
+    {
+      "name": "math",
+      "importance": 3,
+      "category": "methodology",
+      "dateAdded": "01/01/2024"
+    },
+    {
+      "name": "sequencing",
+      "importance": 5,
+      "category": "structure",
+      "dateAdded": "09/02/2024"
+    }
+  ],
+  "Date Reviewed": "27/01/2024",
+  "Reviewer ID": "R2",
+  "Reviewer Details": {
+    "id": "R2",
+    "name": "Ciaran O'Neill",
+    "role": "Reviewer"
+  },
+  "Resolved": true,
+  "Resolution Date": "28/01/2024",
+  "Additional Notes": "Improves readability and referencing of equations",
+  "Impact": "Minor"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da28772d"
+  },
+  "Category": "Method, Mathematics and Terminology",
+  "Comment": "Key steps are missing in equation/expressions development",
+  "Date": "29/01/2024",
+  "Type": "Mathematical Detail",
+  "Severity": "High",
+  "Priority": "High",
+  "Suggested Action": "Complete missing steps",
+  "Status": "Pending",
+  "Tags": [
+    {
+      "name": "math",
+      "importance": 3,
+      "category": "content",
+      "dateAdded": "11/01/2024"
+    },
+    {
+      "name": "steps",
+      "importance": 5,
+      "category": "methodology",
+      "dateAdded": "26/02/2024"
+    }
+  ],
+  "Date Reviewed": "30/01/2024",
+  "Reviewer ID": "R5",
+  "Reviewer Details": {
+    "id": "R5",
+    "name": "Maeve Doherty",
+    "role": "Analyst"
+  },
+  "Resolved": false,
+  "Resolution Date": null,
+  "Additional Notes": "Missing steps lead to incomplete reasoning",
+  "Impact": "Major"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da28772e"
+  },
+  "Category": "Method, Mathematics and Terminology",
+  "Comment": "Excessive detail in the development of equations/expressions",
+  "Date": "31/01/2024",
+  "Type": "Mathematical Detail",
+  "Severity": "Low",
+  "Priority": "Medium",
+  "Suggested Action": "Simplify equations",
+  "Status": "Completed",
+  "Tags": [
+    {
+      "name": "math",
+      "importance": 5,
+      "category": "structure",
+      "dateAdded": "13/02/2024"
+    },
+    {
+      "name": "simplification",
+      "importance": 3,
+      "category": "technical",
+      "dateAdded": "23/02/2024"
+    }
+  ],
+  "Date Reviewed": "01/02/2024",
+  "Reviewer ID": "R1",
+  "Reviewer Details": {
+    "id": "R1",
+    "name": "Aidan McDonnell",
+    "role": "Editor"
+  },
+  "Resolved": true,
+  "Resolution Date": "02/02/2024",
+  "Additional Notes": "Too much detail reduces readability",
+  "Impact": "Minor"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da28772f"
+  },
+  "Category": "Method, Mathematics and Terminology",
+  "Comment": "Units or symbols are inconsistent with SI or other conventions",
+  "Date": "02/02/2024",
+  "Type": "Mathematical Detail",
+  "Severity": "Medium",
+  "Priority": "High",
+  "Suggested Action": "Standardize units",
+  "Status": "Completed",
+  "Tags": [
+    {
+      "name": "math",
+      "importance": 2,
+      "category": "technical",
+      "dateAdded": "27/02/2024"
+    },
+    {
+      "name": "units",
+      "importance": 5,
+      "category": "content",
+      "dateAdded": "27/01/2024"
+    }
+  ],
+  "Date Reviewed": "03/02/2024",
+  "Reviewer ID": "R2",
+  "Reviewer Details": {
+    "id": "R2",
+    "name": "Ciaran O'Neill",
+    "role": "Reviewer"
+  },
+  "Resolved": true,
+  "Resolution Date": "04/02/2024",
+  "Additional Notes": "Inconsistency may cause confusion in interpretation",
+  "Impact": "Moderate"
+},
+{
+  "_id": {
+    "$oid": "6749a9ace9d76968da287730"
+  },
+  "Category": "Method, Mathematics and Terminology",
+  "Comment": "Abbreviations and acronyms are not consistently defined",
+  "Date": "04/02/2024",
+  "Type": "Terminology",
+  "Severity": "Medium",
+  "Priority": "Medium",
+  "Suggested Action": "Define terms at first mention",
+  "Status": "Pending",
+  "Tags": [
+    {
+      "name": "terminology",
+      "importance": 1,
+      "category": "technical",
+      "dateAdded": "29/02/2024"
+    },
+    {
+      "name": "acronyms",
+      "importance": 3,
+      "category": "technical",
+      "dateAdded": "07/01/2024"
+    }
+  ],
+  "Date Reviewed": "05/02/2024",
+  "Reviewer ID": "R6",
+  "Reviewer Details": {
+    "id": "R6",
+    "name": "Padraig Maguire",
+    "role": "Reviewer"
+  },
+  "Resolved": false,
+  "Resolution Date": null,
+  "Additional Notes": "Important for clarity in understanding",
+  "Impact": "Minor"
+}]
