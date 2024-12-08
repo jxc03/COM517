@@ -340,40 +340,39 @@ def update_priority2():
 
 
 # Use aggregration expressions
-# Analysing categories 
-@app.route('/category_analysis', method=['GET'])
+# Analysing categories
+@app.route('/category_analysis', methods=['GET'])
 def category_analysis():
     try:
-        pipeline =  [
+        pipeline = [
             {"$unwind": "$Tags"},
             {"$group": {
-                "_id": {"Category": "$Category", "Tag category": "$Tags.category"},
-                        "Total issues": {"$sum": 1},
-                        "Importance average": {"$avg": "$Tags.importance"},
-                        "Unique tags": {"$addToSet": "$Tags.name"},
-                        "Resolved counter": {"$sum": {"$cond": ["$Resolved", 1, 0]}},
-                        "High priority counter": {"$sum": {"$cond": [{"$eq": ["$Priority", "Critical"]} 1, 0]}}
-                    }
-                }
-
-
-
-            {"$group": {
-                "_id": {
-                    "Category": "$Category",
-                    "Tag category": "$Tags.category"
-                },
-                "Total issues": {"$sum": 1},
-                "Importance average": {"$avg": "$Tags.importance"},
-                "Unique tags": {"$addToSet": "$Tags.name"},
-                "Resolved counter": {"$sum": {"$cond": ["$Resolved", 1, 0]}},
-                "High priority counter": {"$sum": {"$cond": [{"$eq": ["$Priority", "Critical"]} 1, 0]}}  
+                "_id": {"category": "$Category", "tag_category": "$Tags.category"},
+                        "total_issues": {"$sum": 1},
+                        "importance_average": {"$avg": "$Tags.importance"},
+                        "tags": {"$addToSet": "$Tags.name"},
+                        "resolved_counter": {"$sum": {"$cond": ["$Resolved", 1, 0]}},
+                        "high_priority_counter": {"$sum": {"$cond": [{"$eq": ["$Priority", "Critical"]}, 1, 0]}}
                 }
             },
+            {"$project": {
+                "_id": 0,
+                "Main category": "$_id.category",
+                "Tag category": "$_id.tag_category",
+                "Total issues": "$total_issues",
+                "Average importance": "$importance_average",
+                "Tag count": {"$size": "$tags"},
+                "Tags": "$tags",
+                "Resolve count": "$resolved_counter",
+                "High priority count": "$high_priority_counter"
+                }    
+            }
         ]
 
-
+        results = list(collection.aggregate(pipeline))
+        return jsonify({"Category analysis": results})
     except Exception as err:
+        return jsonify({"Error": str(err)}), 500
 
 
 '''
