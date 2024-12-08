@@ -338,6 +338,49 @@ def update_priority2():
     # Handle GET request
     return jsonify({"message": "Please use PUT method to update priorities"})
 
+
+# Use aggregration expressions
+# Analysing categories 
+@app.route('/category_analysis', method=['GET'])
+def category_analysis():
+    try:
+        pipeline =  [
+            {"$unwind": "$Tags"},
+            {"$group": {
+                "_id": {"Category": "$Category", "Tag category": "$Tags.category"},
+                        "Total issues": {"$sum": 1},
+                        "Importance average": {"$avg": "$Tags.importance"},
+                        "Unique tags": {"$addToSet": "$Tags.name"},
+                        "Resolved counter": {"$sum": {"$cond": ["$Resolved", 1, 0]}},
+                        "High priority counter": {"$sum": {"$cond": [{"$eq": ["$Priority", "Critical"]} 1, 0]}}
+                    }
+                }
+
+
+
+            {"$group": {
+                "_id": {
+                    "Category": "$Category",
+                    "Tag category": "$Tags.category"
+                },
+                "Total issues": {"$sum": 1},
+                "Importance average": {"$avg": "$Tags.importance"},
+                "Unique tags": {"$addToSet": "$Tags.name"},
+                "Resolved counter": {"$sum": {"$cond": ["$Resolved", 1, 0]}},
+                "High priority counter": {"$sum": {"$cond": [{"$eq": ["$Priority", "Critical"]} 1, 0]}}  
+                }
+            },
+        ]
+
+
+    except Exception as err:
+
+
+'''
+https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/#mongodb-update-up.-addToSet
+'''
+
+
 '''
 @app.route('/reviewer-analytics', methods=['GET'])
 def reviewer_analytics():
