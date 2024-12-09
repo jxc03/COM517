@@ -11,6 +11,7 @@ client = MongoClient('mongodb://localhost:27017/')
 database = client['coursework_db']
 collection = database['categories']
 
+# http://127.0.0.1:2000/show_all
 # Show all documents
 @app.route('/show_all', methods=['GET'])
 def show_all():
@@ -20,7 +21,8 @@ def show_all():
         return jsonify(documents), 200 # Output the document
     except Exception as err: # Handle any error
         return jsonify({"Error": str(err)}), 500
-
+    
+# http://127.0.0.1:2000/all_appendix
 # Show all appendix related concerns
 @app.route('/all_appendix', methods=['GET'])
 def all_appendix():
@@ -34,6 +36,7 @@ def all_appendix():
     except Exception as err:
         return jsonify({"Error": str(err)}), 500
 
+# http://127.0.0.1:2000/all_MMT
 # Show all method, maths and terminology
 @app.route('/all_MMT', methods=['GET'])
 def all_mmt():
@@ -50,6 +53,7 @@ def all_mmt():
 '''
 Select only neccessary fields
 '''
+# http://127.0.0.1:2000/get_appendix
 # Get appendix related concerns with relevant information 
 @app.route('/get_appendix', methods=['GET'])
 def get_appendix():
@@ -60,6 +64,7 @@ def get_appendix():
     except Exception as err:
         return jsonify({"Error": str(err)}), 500
 
+# http://127.0.0.1:2000/get_mmt
 # Get method, maths and terminology with relevant information 
 @app.route('/get_mmt', methods=['GET'])
 def get_mmt():
@@ -74,6 +79,7 @@ def get_mmt():
 Match values in an array
 '''
 # Get documents using tag
+# http://127.0.0.1:2000/get_math_tags
 # Get all the document that has the 'tag' of 'math'    
 @app.route('/get_math_tags', methods=['GET'])
 def get_math_tags(): 
@@ -96,6 +102,7 @@ def get_math_tags():
 Match array element with multiple criteria
 '''
 # Get documents using severity 
+# http://127.0.0.1:2000/get_mmt_severity_high
 # Get mmt documents that have the tag of method and the severity of high and priority of high
 @app.route('/get_mmt_severity_high', methods=['GET'])
 def get_mmt_severity_high():
@@ -120,6 +127,7 @@ def get_mmt_severity_high():
 Match arrays containing all specified elements
 '''
 # Get documents using tag name 
+# http://127.0.0.1:2000/get_appendix_missingContent_tag
 # Get documents with the tag of appendix and missing content
 @app.route('/get_appendix_missingContent_tag', methods=['GET'])
 def get_appendix_missingContent_tag():
@@ -138,6 +146,7 @@ def get_appendix_missingContent_tag():
 '''
 Iterating over result sets
 '''
+# http://127.0.0.1:2000/get_doc_15th_onwards
 # Get documents from 15/01/2024 onwards 
 @app.route('/get_doc_15th_onwards', methods=['GET'])
 def get_doc_15th_onwards():
@@ -163,10 +172,12 @@ def get_doc_15th_onwards():
         return jsonify(result), 200
     except Exception as err:
         return jsonify({"Error": str(err)}), 500
+    
 '''
 Query embedded documents and arrays
 '''
 # Get reviewers by their role
+# http://127.0.0.1:2000/get_editor_reviewers
 # Get reviewers with the role of editor
 @app.route('/get_editor_reviewers', methods=['GET'])
 def get_editor_reviewers():
@@ -176,10 +187,12 @@ def get_editor_reviewers():
         return jsonify(result), 200
     except Exception as err:
         return jsonify({"Error": str(err)}), 500
+    
 '''
 Match elements in arrays with criteria
 '''
 # Get documents by their importance 
+# http://127.0.0.1:2000/get_important_technical_tag
 # Get documents with the tag of importance of 4 and over
 @app.route('/get_important_technical_tag', methods=['GET'])
 def get_important_technical_tag():
@@ -211,6 +224,7 @@ def get_important_technical_tag():
 '''
 Match arrays with all elements specified
 '''
+# http://127.0.0.1:2000/get_specified_tag
 # Get all documents that has the tag information specified
 @app.route('/get_specified_tag', methods=['GET'])
 def get_specified_tag():
@@ -254,6 +268,7 @@ collection.create_index([
 '''
 "Perform text search"
 '''
+# http://127.0.0.1:2000/search
 # Get all status pending documents
 @app.route('/search', methods=['GET'])
 def text_search():
@@ -292,6 +307,7 @@ def get_indexes():
 '''
 Transformations
 '''
+# http://127.0.0.1:2000/severity_impact
 # Analyse severity and impact
 @app.route('/severity_impact', methods=['GET'])
 def severity_impact_analysis():
@@ -361,6 +377,7 @@ def severity_impact_analysis():
 '''   
 Deconstruct array into seperate documents
 '''
+# http://127.0.0.1:2000/unwind_tags
 # Break down of tags
 @app.route('/unwind_tags', methods=['GET'])
 def unwind_tags():
@@ -390,6 +407,7 @@ def unwind_tags():
 '''
 MapReduce
 '''
+# http://127.0.0.1:2000/comment_word_count
 # Word count for the comments data
 @app.route('/comment_word_count', methods=['GET'])
 def word_count():
@@ -438,6 +456,7 @@ def word_count():
 '''
 Use aggregration expressions
 '''
+# http://127.0.0.1:2000/category_analysis
 # Analyse categories
 @app.route('/category_analysis', methods=['GET'])
 def category_analysis():
@@ -480,16 +499,17 @@ https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/#mongodb-
 '''
 Conditional update 
 '''
+# http://127.0.0.1:2000/update_priority [GET, PUT]
 # Update documents with priority to critical if severity is high and impact is major
 @app.route('/update_priority', methods=['GET', 'PUT'])
-def update_priority2():
+def update_priority():
     if request.method == 'PUT':
         try:
             update_fields = list(collection.find({
                 "Severity": "High",
                 "Impact": "Major",
                 "Resolved": False,
-                "Priority": {"$ne": "Critical"}
+                "Priority": {"$ne": "Critical"} 
             }))
             
             result = collection.update_many(
