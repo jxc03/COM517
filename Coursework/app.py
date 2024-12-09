@@ -14,29 +14,38 @@ collection = database['categories']
 # Show all documents
 @app.route('/show_all', methods=['GET'])
 def show_all():
-    all_documents = collection.find({})
-    documents = [{**document, "_id": str(document["_id"])} for document in all_documents]
-    return jsonify(documents), 200
+    try: # Try the code 
+        all_documents = collection.find({}) # Find all documents
+        documents = [{**document, "_id": str(document["_id"])} for document in all_documents] # Take documents and convert ObjectID
+        return jsonify(documents), 200 # Output the document
+    except Exception as err: # Handle any error
+        return jsonify({"Error": str(err)}), 500
 
 # Show all appendix related concerns
 @app.route('/all_appendix', methods=['GET'])
 def all_appendix():
-    appendix_documents = collection.find({"Category": "Appendix-related concerns"})
-    appendix_documents_list = []
-    for document in appendix_documents:
-        document["_id"] = str(document["_id"])
-        appendix_documents_list.append(document)
-    return jsonify(appendix_documents_list), 200
+    try:
+        appendix_documents = collection.find({"Category": "Appendix-related concerns"}) # Find all document specified
+        appendix_documents_list = [] # Create list
+        for document in appendix_documents:
+            document["_id"] = str(document["_id"]) # Handle CbjectID
+            appendix_documents_list.append(document) # Add queried document with converted ObjectID to list
+        return jsonify(appendix_documents_list), 200 # Output the list of document
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
 
 # Show all method, maths and terminology
 @app.route('/all_MMT', methods=['GET'])
 def all_mmt():
-    mmt_documents = collection.find({"Category": "Method, Mathematics and Terminology"})
-    mmt_documents_list = []
-    for document in mmt_documents:
-        document["_id"] = str(document["_id"])
-        mmt_documents_list.append(document)
-    return jsonify(mmt_documents_list), 200
+    try:
+        mmt_documents = collection.find({"Category": "Method, Mathematics and Terminology"})
+        mmt_documents_list = []
+        for document in mmt_documents:
+            document["_id"] = str(document["_id"])
+            mmt_documents_list.append(document)
+        return jsonify(mmt_documents_list), 200
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
 
 '''
 Select only neccessary fields
@@ -44,16 +53,22 @@ Select only neccessary fields
 # Get appendix related concerns with relevant information 
 @app.route('/get_appendix', methods=['GET'])
 def get_appendix():
-    appendix_documents = collection.find({"Category": "Method, Mathematics and Terminology"}, {"Category": 1, "Comment": 1, "Date": 1, "Severity": 1, "Priority": 1, "Suggested Action": 1}) # Selects only 
-    result = [{"Category": document["Category"], "Comment": document["Comment"], "Date": document["Date"], "Severity": document["Severity"], "Priority": document["Priority"], "Suggested Action": document["Suggested Action"]} for document in appendix_documents] # Stores to a list
-    return jsonify(result) # Outputs the list
+    try:
+        appendix_documents = collection.find({"Category": "Method, Mathematics and Terminology"}, {"Category": 1, "Comment": 1, "Date": 1, "Severity": 1, "Priority": 1, "Suggested Action": 1}) # Find only 
+        result = [{"Category": document["Category"], "Comment": document["Comment"], "Date": document["Date"], "Severity": document["Severity"], "Priority": document["Priority"], "Suggested Action": document["Suggested Action"]} for document in appendix_documents] # Store to a list
+        return jsonify(result), 200
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
 
 # Get method, maths and terminology with relevant information 
 @app.route('/get_mmt', methods=['GET'])
 def get_mmt():
-    appendix_documents = collection.find({"Category": "Method, Mathematics and Terminology"}, {"Category": 1, "Comment": 1, "Date": 1, "Severity": 1, "Priority": 1, "Suggested Action": 1})
-    result = [{"Category": document["Category"], "Comment": document["Comment"], "Date": document["Date"], "Severity": document["Severity"], "Priority": document["Priority"], "Suggested Action": document["Suggested Action"]} for document in appendix_documents]
-    return jsonify(result)
+    try:
+        appendix_documents = collection.find({"Category": "Method, Mathematics and Terminology"}, {"Category": 1, "Comment": 1, "Date": 1, "Severity": 1, "Priority": 1, "Suggested Action": 1})
+        result = [{"Category": document["Category"], "Comment": document["Comment"], "Date": document["Date"], "Severity": document["Severity"], "Priority": document["Priority"], "Suggested Action": document["Suggested Action"]} for document in appendix_documents]
+        return jsonify(result), 200
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
 
 '''
 Match values in an array
@@ -62,18 +77,21 @@ Match values in an array
 # Get all the document that has the 'tag' of 'math'    
 @app.route('/get_math_tags', methods=['GET'])
 def get_math_tags(): 
-    tags = collection.find({"Tags.name": {"$in": ["math"]}})
-    result = [{"Category:": document["Category"],
-               "Comment": document["Comment"],
-               "Date": document["Date"],
-               "Type": document["Type"],
-               "Severity": document["Severity"],
-               "Priority": document["Priority"],
-               "Suggested Action": document["Suggested Action"],
-               "Status": document["Status"],
-               "Tags": document["Tags"]} for document in tags] 
-    return jsonify(result)
-
+    try:
+        tags = collection.find({"Tags.name": {"$in": ["math"]}})
+        result = [{"Category:": document["Category"],
+                "Comment": document["Comment"],
+                "Date": document["Date"],
+                "Type": document["Type"],
+                "Severity": document["Severity"],
+                "Priority": document["Priority"],
+                "Suggested Action": document["Suggested Action"],
+                "Status": document["Status"],
+                "Tags": document["Tags"]} for document in tags] 
+        return jsonify(result), 200
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
+        
 '''
 Match array element with multiple criteria
 '''
@@ -81,21 +99,23 @@ Match array element with multiple criteria
 # Get mmt documents that have the tag of method and the severity of high and priority of high
 @app.route('/get_mmt_severity_high', methods=['GET'])
 def get_mmt_severity_high():
-    documents = collection.find(
-        #{
-            #"Tags": {"$in": ["method"]},
-            #"Severity": "High"
-        #}, 
-        #{'_id': 0})
-        {
-            "Tags": {"$elemMatch": {"name": "method"}},
-            "Severity": "High",
-            "Priority": "Critical"
-        },
-        {"_id": 0})
-    result = list(documents)
-    return jsonify(result)
-
+    try:
+        documents = collection.find(
+            #{
+                #"Tags": {"$in": ["method"]},
+                #"Severity": "High"
+            #}, 
+            #{'_id': 0})
+            {
+                "Tags": {"$elemMatch": {"name": "method"}}, # Find method tag using elemMatch operator
+                "Severity": "High",
+                "Priority": "Critical"
+            },
+            {"_id": 0}) # Excludes ObjectID
+        result = list(documents) # Store documents in a list
+        return jsonify(result), 200
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
 '''
 Match arrays containing all specified elements
 '''
@@ -103,14 +123,17 @@ Match arrays containing all specified elements
 # Get documents with the tag of appendix and missing content
 @app.route('/get_appendix_missingContent_tag', methods=['GET'])
 def get_appendix_missingContent_tag():
-    documents = collection.find(
-        {"Tags.name": {"$all": ["appendix", "missing content"]}},
-    )
-    result = []
-    for document in documents:
-        document["_id"] = str(document["_id"])
-        result.append(document)
-    return jsonify(result)
+    try:
+        documents = collection.find(
+            {"Tags.name": {"$all": ["appendix", "missing content"]}}, # Find all document with specified tags
+        )
+        result = []
+        for document in documents:
+            document["_id"] = str(document["_id"])
+            result.append(document)
+        return jsonify(result), 200
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
 
 '''
 Iterating over result sets
@@ -118,26 +141,28 @@ Iterating over result sets
 # Get documents from 15/01/2024 onwards 
 @app.route('/get_doc_15th_onwards', methods=['GET'])
 def get_doc_15th_onwards():
-    document_finder = collection.find({"Date": {"$gte": "20/01/2024"}}) 
-    result = [{"Category": document["Category"],
-               "Comment": document["Comment"],
-               "Date": document["Date"],
-               "Type": document["Type"],
-               "Severity": document["Severity"],
-               "Priority": document["Priority"],
-               "Suggested Action": document["Suggested Action"],
-               "Status": document["Status"],
-               "Tags": document["Tags"],
-               "Date Reviewed": document["Date Reviewed"],
-               "Reviewer ID": document["Reviewer ID"],
-               "Reviewer Details": document["Reviewer Details"],
-               "Resolved": document["Resolved"],
-               "Resolution Date": document["Resolution Date"],
-               "Additional Notes": document["Additional Notes"],
-               "Impact": document["Impact"]
-               } for document in document_finder]
-    return jsonify(result)
-
+    try:
+        document_finder = collection.find({"Date": {"$gte": "20/01/2024"}}) # Find document after specified date
+        result = [{"Category": document["Category"],
+                "Comment": document["Comment"],
+                "Date": document["Date"],
+                "Type": document["Type"],
+                "Severity": document["Severity"],
+                "Priority": document["Priority"],
+                "Suggested Action": document["Suggested Action"],
+                "Status": document["Status"],
+                "Tags": document["Tags"],
+                "Date Reviewed": document["Date Reviewed"],
+                "Reviewer ID": document["Reviewer ID"],
+                "Reviewer Details": document["Reviewer Details"],
+                "Resolved": document["Resolved"],
+                "Resolution Date": document["Resolution Date"],
+                "Additional Notes": document["Additional Notes"],
+                "Impact": document["Impact"]
+                } for document in document_finder]
+        return jsonify(result), 200
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
 '''
 Query embedded documents and arrays
 '''
@@ -145,10 +170,12 @@ Query embedded documents and arrays
 # Get reviewers with the role of editor
 @app.route('/get_editor_reviewers', methods=['GET'])
 def get_editor_reviewers():
-    editor_reviewers = collection.find({"Reviewer Details.role": {"$regex": "^editor$", "$options": "i"}})
-    result = [{"Reviewer Details": r_editor["Reviewer Details"]} for r_editor in editor_reviewers]
-    return jsonify(result)
-
+    try:
+        editor_reviewers = collection.find({"Reviewer Details.role": {"$regex": "^editor$", "$options": "i"}}) # Find role of editor with case-insensitive
+        result = [{"Reviewer Details": r_editor["Reviewer Details"]} for r_editor in editor_reviewers] # Output information within reviewer details
+        return jsonify(result), 200
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
 '''
 Match elements in arrays with criteria
 '''
@@ -156,23 +183,30 @@ Match elements in arrays with criteria
 # Get documents with the tag of importance of 4 and over
 @app.route('/get_important_technical_tag', methods=['GET'])
 def get_important_technical_tag():
-    documents = collection.find({
-        "Tags": {"$elemMatch": {
-            "category": "technical",
-            "importance": {"$gte": 4}
-        }}
-    })
-    result = []
-    for document in documents:
-        document["_id"] = str(document["_id"]) # Converts MongoDB ObjectID to a string
-        # Code to only include tags with importance that is equal or more than 4
-        filter_tags = []
-        for tag in document["Tags"]:
-            if tag["category"] == "technical" and tag["importance"] >= 4:
-                filter_tags.append(tag)
-        document["Tags"] = filter_tags # Updates the document with correct tag data
-        result.append(document)
-    return jsonify(result)
+    try:
+
+        documents = collection.find({
+            "Tags": {"$elemMatch": { # Find tag that matches
+                "category": "technical", # Category of technical
+                "importance": {"$gte": 4} # With importance of 4 and above
+            }}
+        })
+
+        result = []
+
+        for document in documents:
+            document["_id"] = str(document["_id"]) # Convert MongoDB ObjectID to a string
+            # Code to only include tags with importance that is equal or more than 4
+            filter_tags = []
+            for tag in document["Tags"]:
+                if tag["category"] == "technical" and tag["importance"] >= 4:
+                    filter_tags.append(tag)
+            document["Tags"] = filter_tags # Update the document with correct tag data
+            result.append(document)
+        return jsonify(result), 200
+
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
 
 '''
 Match arrays with all elements specified
@@ -180,58 +214,80 @@ Match arrays with all elements specified
 # Get all documents that has the tag information specified
 @app.route('/get_specified_tag', methods=['GET'])
 def get_specified_tag():
-    documents = collection.find({"Tags":[
-        {
-            "name": "method", 
-            "importance": 5,
-            "category": "content",
-            "dateAdded": "06/02/2024"
-        },
-        {
-            "name": "justification", 
-            "importance": 5,
-            "category": "structure",
-            "dateAdded": "06/02/2024"
-        }
-    ]})
-    result = []
-    for document in documents:
-        document["_id"] = str(document["_id"])
-        result.append(document)
-    return jsonify(result)
+    try:
 
-# "Perform text search"
-# Get all status pending documents
-'''
-@app.route('/get_status_pending', methods=['GET'])
-def get_status_pending():
-    status_pending = collection.find({"\"$text": {"\"$search": "\"Fundamental flaws in methodology have been noted\""}})
-    result = []
-    for document in status_pending:
-        document["_id"] = str(document["_id"])
-        result.append(document)
-    return jsonify(result)
-'''
+        documents = collection.find({"Tags":[ # Find exact tag criteria
+            {
+                "name": "method", 
+                "importance": 5,
+                "category": "content",
+                "dateAdded": "06/02/2024"
+            },
+            {
+                "name": "justification", 
+                "importance": 5,
+                "category": "structure",
+                "dateAdded": "06/02/2024"
+            }
+        ]})
+
+        result = []
+
+        for document in documents:
+            document["_id"] = str(document["_id"])
+            result.append(document)
+        return jsonify(result)
+
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
+
+# Old code which may have worked
 '''
 collection.create_index([
     ("Comment", "text"),
-    ("Category", "text")
-    ("Additional notes", "text")
+    ("Category", "text"),
+    ("Additional notes", "text"),
     ("Suggested action", "text")
 ])
+'''
+
+'''
+"Perform text search"
+'''
+# Get all status pending documents
 @app.route('/search', methods=['GET'])
 def text_search():
-    search_text = request.args.get('query', '')
+    # Old testing code to help fix index error / duplication
+    '''
     try:
+        collection.drop_index("Comment_text_Category_text_Additional Notes_text_Tags.name_text")
+    except Exception as err:
+        print({"Error": str(e)})
+    '''
+    try:
+        text_search = request.args.get('query', '') # Search query, defaulted to a empty string
+        if not text_search: # Validate search query
+            return jsonify({"Error": "Search query is required"})
+        
         results = collection.find(
-            {"$text": {"$search": text_search}},
+            {"$text": {"$search": text_search}}, # Find search query
         )
+
+        results_list = json.loads(dumps(list(results))) # Convert to JSON list
+        return jsonify({"Results": results_list})
     except Exception as err:
         return jsonify({"Error": str(err)}, 500)
 
+# Code to help debug
 '''
-
-
+@app.route('/indexes', methods=['GET'])
+def get_indexes():
+    try:
+        indexes = list(collection.list_indexes())
+        return jsonify({"indexes": json.loads(dumps(indexes))})
+    except Exception as err:
+        return jsonify({"Error": str(err)}), 500
+'''
 
 '''
 Transformations
@@ -240,7 +296,7 @@ Transformations
 @app.route('/severity_impact', methods=['GET'])
 def severity_impact_analysis():
     try:
-        pipeline = [
+        pipeline = [ # Aggregration pinline
             # Group by severity and impact
             {"$group": {
                 "_id": {
@@ -248,8 +304,8 @@ def severity_impact_analysis():
                     "impact": "$Impact"
                 },
                 # Issues
-                "total_issues": {"$sum": 1},
-                "resolved_counter": {"$sum": {"$cond": ["$Resolved", 1, 0]}},
+                "total_issues": {"$sum": 1}, # Total number of issues
+                "resolved_counter": {"$sum": {"$cond": ["$Resolved", 1, 0]}}, # Count resolved issues 
                 # Priorities
                 "critical_counter": {"$sum": {"$cond": [{"$eq": ["$Priority", "Critical"]}, 1, 0]}},
                 #Categories
@@ -327,7 +383,7 @@ def unwind_tags():
         result = list(collection.aggregate(pipeline))
         return jsonify({
             "Total tags": len(result),
-            "unwound_tags": result
+            "Tags": result
             })
     except Exception as err:
         return jsonify({"Error": str(err)}), 500
@@ -397,7 +453,7 @@ def category_analysis():
                         "high_priority_counter": {"$sum": {"$cond": [{"$eq": ["$Priority", "Critical"]}, 1, 0]}}
                 }
             },
-            {"$sort": {"total_issues": -1}},
+            {"$sort": {"total_issues": -1}}, # Sort my highest to lowest
             {"$project": {
                 "_id": 0,
                 "Main category": "$_id.category",
@@ -417,12 +473,9 @@ def category_analysis():
     
     except Exception as err:
         return jsonify({"Error": str(err)}), 500
-
-
 '''
 https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/#mongodb-update-up.-addToSet
 '''
-
 
 '''
 Conditional update 
@@ -470,15 +523,15 @@ def update_priority2():
                     document["_id"] = str(document["_id"])
          
             return jsonify({
-                "modified_count": result.modified_count,
-                "modified_documents": json.loads(dumps(updated_documents))
+                "Number of modified": result.modified_count,
+                "Modified documents": json.loads(dumps(updated_documents))
             })
 
         except Exception as e:
             return jsonify({"error": str(e)}), 500
     
     # Handle GET request
-    return jsonify({"message": "Please use PUT method to update priorities"})
+    return jsonify({"Error": "Please use PUT method to update priorities"})
 
 if __name__ == '__main__':
     app.run(debug=True, port=2000)
