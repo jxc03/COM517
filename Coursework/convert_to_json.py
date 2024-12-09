@@ -43,18 +43,20 @@ def convert_csv_to_json(input_csv, output_json):
 
 convert_csv_to_json(input_csv, output_json)
 '''
+
 import pandas as pd
 import json
 
-input_csv = 'dataset_csv.csv'
-output_json = 'dataset_json.json'
+#input_csv = 'dataset_csv.csv'
+input_csv = 'C:/Users/jcari/Documents/COM517-1/Coursework/dataset_csv.csv'
+output_json = 'dataset_jsonVideo.json'
 
+# Change tag field
 def change_tags_field(tags_string):
-    """Convert a comma-separated string into a list of tags."""
     return [tag.strip() for tag in tags_string.split(',')] if tags_string else []
 
+# Coverted reviewer details into a dictionary
 def change_reviewer_details(details_string):
-    """Convert a formatted string into a dictionary of reviewer details."""
     if details_string:
         parts_of_detail = [part.strip() for part in details_string.split(',')]
         details = {}
@@ -64,13 +66,12 @@ def change_reviewer_details(details_string):
         return details
     return {}
 
+#Convert Yes/No to boolean True/False.
 def change_resolve_to_boolean(value):
-    """Convert 'Yes'/'No' to boolean True/False."""
     return value.strip().lower() == 'yes' if value else False
 
 def convert_csv_to_json(input_csv, output_json):
-    """Read CSV, apply transformations, and save as JSON using pandas."""
-    # Read the CSV file into a DataFrame
+    # Read the CSV file
     df = pd.read_csv(input_csv, encoding='utf-8')
     
     # Apply transformations to specific columns

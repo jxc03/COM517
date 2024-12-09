@@ -53,8 +53,8 @@ import os  # Import os module to check file existence
 
 # MongoDB connection
 mongo_uri = "mongodb://localhost:27017/"
-database_name = "coursework_db"
-collection_name = "categories"
+database_name = "coursework_dbVideo"
+collection_name = "categoriesVideo"
 
 def upload_data():
     try: 

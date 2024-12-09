@@ -103,7 +103,7 @@ Match array element with multiple criteria
 '''
 # Get documents using severity 
 # http://127.0.0.1:2000/get_mmt_severity_high
-# Get mmt documents that have the tag of method and the severity of high and priority of high
+# Get mmt documents that have the tag of method and the severity of high and priority of critical
 @app.route('/get_mmt_severity_high', methods=['GET'])
 def get_mmt_severity_high():
     try:
@@ -151,7 +151,7 @@ Iterating over result sets
 @app.route('/get_doc_15th_onwards', methods=['GET'])
 def get_doc_15th_onwards():
     try:
-        document_finder = collection.find({"Date": {"$gte": "20/01/2024"}}) # Find document after specified date
+        document_finder = collection.find({"Date": {"$gte": "15/01/2024"}}) # Find document after specified date
         result = [{"Category": document["Category"],
                 "Comment": document["Comment"],
                 "Date": document["Date"],
@@ -358,11 +358,12 @@ def severity_impact_analysis():
                 "total_combinations": len(results),
                 "total_issues": sum(r["metrics"]["total_issues"] for r in results),
             },
-            "risk": {
-                "high_risk": len([r for r in results if r["risk_level"] == "High Risk"]),
-                "medium_risk": len([r for r in results if r["risk_level"] == "Medium Risk"]),
-                "low_risk": len([r for r in results if r["risk_level"] == "Low Risk"])
-            }
+            
+            #"risk": {
+                #"high_risk": len([r for r in results if r["risk_level"] == "High Risk"]),
+                #"medium_risk": len([r for r in results if r["risk_level"] == "Medium Risk"]),
+                #"low_risk": len([r for r in results if r["risk_level"] == "Low Risk"])
+            #}
         }
 
         # Output
@@ -500,6 +501,7 @@ https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/#mongodb-
 Conditional update 
 '''
 # http://127.0.0.1:2000/update_priority [GET, PUT]
+# curl -X PUT http://127.0.0.1:2000/update_priority
 # Update documents with priority to critical if severity is high and impact is major
 @app.route('/update_priority', methods=['GET', 'PUT'])
 def update_priority():

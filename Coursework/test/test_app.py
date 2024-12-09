@@ -5,6 +5,8 @@ from datetime import datetime
 from bson import ObjectId
 from app import app
 
+#python -m pytest test/test_app.py -v
+
 # Fixture for test
 @pytest.fixture
 def test_client():
@@ -270,8 +272,8 @@ def test_get_specified_tag(test_client, db):
     data = response.get_json()
     assert isinstance(data, list)
 
-#Test /update_priority2 endpoint
-def test_update_priority2(test_client, db):
+#Test /update_priority endpoint
+def test_update_priority(test_client, db):
     test_doc = {
         "Severity": "High",
         "Impact": "Major",

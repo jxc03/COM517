@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 # Connection to MongoDB
 client = MongoClient('mongodb://localhost:27017/')
-database = client['coursework_db']
-collection = database['categories']
+database = client['coursework_dbVideo']
+collection = database['categoriesVideo']
 
 # Added to better use $elemMatch
 @app.route('/update_all_tags_random', methods=['POST'])
@@ -58,7 +58,6 @@ def check_updated_tags():
         doc["_id"] = str(doc["_id"])
         result.append(doc)
     return jsonify(result)
-
 
 
 if __name__ == '__main__':
